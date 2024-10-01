@@ -3,23 +3,28 @@ using MyRecipeBook.Application.SecurityConfig;
 using MyRecipeBook.Communication.Requests;
 using MyRecipeBook.Communication.Responses;
 using MyRecipeBook.Domain.Entities;
+using MyRecipeBook.Domain.Repositories;
+using MyRecipeBook.Domain.Repositories.UserRepository;
 using MyRecipeBook.Exceptions.ExceptionBase;
 
 namespace MyRecipeBook.Application.UseCases.UserManagement.Create;
 
-public static class CreateUser
+public class CreateUser(IMapper mapper, PasswordEncrypt encrypt, IUserRepository repository, IUnitOfWork unitOfWork) : ICreateUser
 {
-  public static CreateUserResponse Execute(CreateUserRequest request, IMapper mapper, PasswordEncrypt encrypt)
+  public async Task<CreateUserResponse> Execute(CreateUserRequest request)
   {
-    var response = mapper.Map<User>(request);
-    response.Password = encrypt.Encrypt(request.Password);
-    
     Validate(request);
-    
+
+    var user = mapper.Map<User>(request);
+    user.Password = encrypt.Encrypt(user.Password);
+
+    await repository.Add(user);
+    await unitOfWork.CommitAsync();
+
     return new CreateUserResponse
     {
-      Name = response.Name,
-      Email = response.Email
+      Name = user.Name,
+      Email = user.Email
     };
   }
 

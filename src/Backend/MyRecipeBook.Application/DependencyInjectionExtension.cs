@@ -16,7 +16,6 @@ public static class DependencyInjectionExtension
   private static void AddAutoMapper(IServiceCollection services)
   {
     services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-    //AppDomain.CurrentDomain.GetAssemblies()
   }
 
   private static void AddUseCases(IServiceCollection services)

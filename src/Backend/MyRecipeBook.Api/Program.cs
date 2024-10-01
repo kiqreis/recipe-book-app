@@ -1,7 +1,7 @@
 using MyRecipeBook.Api.Filters;
 using MyRecipeBook.Api.Middleware;
-using MyRecipeBook.Application.SecurityConfig;
-using MyRecipeBook.Application.Services.Mapping;
+using MyRecipeBook.Application;
+using MyRecipeBook.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,8 +12,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMvc(opt => opt.Filters.Add(typeof(ExceptionFilter)));
-builder.Services.AddAutoMapper(typeof(MappingProfile));
-builder.Services.AddScoped<PasswordEncrypt>();
+builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddApplication();
 
 var app = builder.Build();
 
