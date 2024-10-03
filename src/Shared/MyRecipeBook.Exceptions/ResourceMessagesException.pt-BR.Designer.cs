@@ -7,66 +7,91 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MyRecipeBook.Exceptions {
-    using System;
-    
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
-    [System.Diagnostics.DebuggerNonUserCodeAttribute()]
-    [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class ResourceMessagesException_pt_BR {
-        
-        private static System.Resources.ResourceManager resourceMan;
-        
-        private static System.Globalization.CultureInfo resourceCulture;
-        
-        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        public ResourceMessagesException_pt_BR() {
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static System.Resources.ResourceManager ResourceManager {
-            get {
-                if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("MyRecipeBook.Exceptions.ResourceMessagesException_pt_BR", typeof(ResourceMessagesException_pt_BR).Assembly);
-                    resourceMan = temp;
-                }
-                return resourceMan;
-            }
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static System.Globalization.CultureInfo Culture {
-            get {
-                return resourceCulture;
-            }
-            set {
-                resourceCulture = value;
-            }
-        }
-        
-        public static string NAME_EMPTY {
-            get {
-                return ResourceManager.GetString("NAME_EMPTY", resourceCulture);
-            }
-        }
-        
-        public static string EMAIL_EMPTY {
-            get {
-                return ResourceManager.GetString("EMAIL_EMPTY", resourceCulture);
-            }
-        }
-        
-        public static string PASSWORD_EMPTY {
-            get {
-                return ResourceManager.GetString("PASSWORD_EMPTY", resourceCulture);
-            }
-        }
-        
-        public static string UNKNOWN_ERROR {
-            get {
-                return ResourceManager.GetString("UNKNOWN_ERROR", resourceCulture);
-            }
-        }
+namespace MyRecipeBook.Exceptions
+{
+  using System;
+
+
+  [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+  [System.Diagnostics.DebuggerNonUserCodeAttribute()]
+  [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+  public class ResourceMessagesException_pt_BR
+  {
+
+    private static System.Resources.ResourceManager resourceMan;
+
+    private static System.Globalization.CultureInfo resourceCulture;
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+    public ResourceMessagesException_pt_BR()
+    {
     }
+
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    public static System.Resources.ResourceManager ResourceManager
+    {
+      get
+      {
+        if (object.Equals(null, resourceMan))
+        {
+          System.Resources.ResourceManager temp = new System.Resources.ResourceManager("MyRecipeBook.Exceptions.ResourceMessagesException_pt_BR", typeof(ResourceMessagesException_pt_BR).Assembly);
+          resourceMan = temp;
+        }
+        return resourceMan;
+      }
+    }
+
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    public static System.Globalization.CultureInfo Culture
+    {
+      get
+      {
+        return resourceCulture;
+      }
+      set
+      {
+        resourceCulture = value;
+      }
+    }
+
+    public static string NAME_EMPTY
+    {
+      get
+      {
+        return ResourceManager.GetString("NAME_EMPTY", resourceCulture);
+      }
+    }
+
+    public static string EMAIL_EMPTY
+    {
+      get
+      {
+        return ResourceManager.GetString("EMAIL_EMPTY", resourceCulture);
+      }
+    }
+
+    public static string PASSWORD_EMPTY
+    {
+      get
+      {
+        return ResourceManager.GetString("PASSWORD_EMPTY", resourceCulture);
+      }
+    }
+
+    public static string UNKNOWN_ERROR
+    {
+      get
+      {
+        return ResourceManager.GetString("UNKNOWN_ERROR", resourceCulture);
+      }
+    }
+
+    public static string EMAIL_ALREADY_EXISTS
+    {
+      get
+      {
+        return ResourceManager.GetString("EMAIL_ALREADY_EXISTS", resourceCulture);
+      }
+    }
+  }
 }
