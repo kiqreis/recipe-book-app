@@ -1,13 +1,13 @@
 using AutoMapper;
+using FluentValidation.Results;
 using MyRecipeBook.Application.SecurityConfig;
 using MyRecipeBook.Communication.Requests;
 using MyRecipeBook.Communication.Responses;
 using MyRecipeBook.Domain.Entities;
 using MyRecipeBook.Domain.Repositories;
 using MyRecipeBook.Domain.Repositories.UserRepository;
-using MyRecipeBook.Exceptions.ExceptionBase;
-using FluentValidation.Results;
 using MyRecipeBook.Exceptions;
+using MyRecipeBook.Exceptions.ExceptionBase;
 
 namespace MyRecipeBook.Application.UseCases.UserManagement.Create;
 
