@@ -1,0 +1,15 @@
+﻿using FluentMigrator;
+using FluentMigrator.Builders.Create.Table;
+
+namespace MyRecipeBook.Infrastructure.Migrations.Versions;
+
+public abstract class VersionBase : ForwardOnlyMigration
+{
+  protected ICreateTableColumnOptionOrWithColumnSyntax CreateTable(string table)
+  {
+    return CreateTable(table)
+    .WithColumn("Id").AsInt64().PrimaryKey().Identity()
+    .WithColumn("CreatedAt").AsDateTime().NotNullable().WithDefault(SystemMethods.CurrentUTCDateTime)
+    .WithColumn("IsActive").AsBoolean().NotNullable();
+  }
+}
