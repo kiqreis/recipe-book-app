@@ -10,6 +10,6 @@ public abstract class VersionBase : ForwardOnlyMigration
     return Create.Table(table)
     .WithColumn("Id").AsInt64().PrimaryKey().Identity()
     .WithColumn("CreatedAt").AsDateTime().NotNullable().WithDefault(SystemMethods.CurrentUTCDateTime)
-    .WithColumn("IsActive").AsBoolean().NotNullable();
+    .WithColumn("IsActive").AsBoolean().NotNullable().WithDefaultValue(true);
   }
 }
