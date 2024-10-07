@@ -12,7 +12,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
     builder.Property(u => u.Id)
       .HasColumnName("Id")
-      .HasColumnType("int")
+      .HasColumnType("bigint")
       .UseIdentityColumn();
 
     builder.Property(u => u.IsActive)
@@ -20,8 +20,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
       .HasColumnType("bit")
       .HasDefaultValue(true);
 
-    builder.Property(u => u.CreateAt)
-      .HasColumnName("CreateAt")
+    builder.Property(u => u.CreatedAt)
+      .HasColumnName("CreatedAt")
       .HasColumnType("datetime")
       .HasDefaultValueSql("getdate()");
 
