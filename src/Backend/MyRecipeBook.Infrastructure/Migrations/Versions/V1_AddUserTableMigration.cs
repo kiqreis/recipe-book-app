@@ -7,7 +7,7 @@ public class V1_AddUserTableMigration : VersionBase
 {
   public override void Up()
   {
-    Create.Table("Users")
+    CreateTable("Users")
       .WithColumn("Name").AsString(120).NotNullable()
       .WithColumn("Email").AsString(160).NotNullable()
       .WithColumn("Password").AsString(128).NotNullable();
