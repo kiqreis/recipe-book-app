@@ -4,5 +4,5 @@ public class EntityBase
 {
   public long Id { get; set; }
   public bool IsActive { get; set; } = true;
-  public DateTime CreateAt { get; set; } = DateTime.UtcNow;
+  public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }
