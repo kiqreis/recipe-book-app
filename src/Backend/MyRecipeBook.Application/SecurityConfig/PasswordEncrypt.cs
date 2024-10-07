@@ -7,7 +7,11 @@ public class PasswordEncrypt
 {
   public string Encrypt(string password)
   {
-    var bytes = Encoding.ASCII.GetBytes($"{password}f2m_+Vm3cV*j");
+    var salt = new byte[16];
+
+    RandomNumberGenerator.Fill(salt);
+
+    var bytes = Encoding.ASCII.GetBytes($"{password}{Convert.ToBase64String(salt)}");
     var hashBytes = SHA512.HashData(bytes);
 
     return StringBytes(hashBytes);
@@ -24,5 +28,5 @@ public class PasswordEncrypt
     }
 
     return sb.ToString();
-  } 
+  }
 }
