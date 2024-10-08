@@ -132,4 +132,7 @@
   <data name="EMAIL_ALREADY_EXISTS" xml:space="preserve">
     <value>This email already exists</value>
   </data>
+  <data name="EMAIL_INVALID" xml:space="preserve">
+    <value>The email field is invalid</value>
+  </data>
 </root>

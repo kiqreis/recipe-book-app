@@ -8,15 +8,15 @@
 
     <ItemGroup>
       <EmbeddedResource Update="ResourceMessagesException.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
+        <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>ResourceMessagesException.Designer.cs</LastGenOutput>
       </EmbeddedResource>
       <EmbeddedResource Update="ResourceMessagesException.fr-FR.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
+        <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>ResourceMessagesException.fr-FR.Designer.cs</LastGenOutput>
       </EmbeddedResource>
       <EmbeddedResource Update="ResourceMessagesException.pt-BR.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
+        <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>ResourceMessagesException.pt-BR.Designer.cs</LastGenOutput>
       </EmbeddedResource>
       <EmbeddedResource Update="ResourceMessagesException.es-ES.resx">

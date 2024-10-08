@@ -93,5 +93,13 @@ namespace MyRecipeBook.Exceptions
         return ResourceManager.GetString("EMAIL_ALREADY_EXISTS", resourceCulture);
       }
     }
+
+    public static string EMAIL_INVALID
+    {
+      get
+      {
+        return ResourceManager.GetString("EMAIL_INVALID", resourceCulture);
+      }
+    }
   }
 }
