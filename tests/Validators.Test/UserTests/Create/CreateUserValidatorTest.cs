@@ -28,7 +28,7 @@ public class CreateUserValidatorTest
     var result = validator.Validate(request);
 
     result.IsValid.Should().BeFalse();
-    
+
     result.Errors.Should().ContainSingle()
       .And.Contain(e => e.ErrorMessage.Equals(ResourceMessagesException.NAME_EMPTY));
   }
@@ -47,5 +47,24 @@ public class CreateUserValidatorTest
 
     result.Errors.Should().ContainSingle()
       .And.Contain(e => e.ErrorMessage.Equals(ResourceMessagesException.EMAIL_EMPTY));
+  }
+
+  [Theory]
+  [InlineData(0)]
+  [InlineData(1)]
+  [InlineData(2)]
+  [InlineData(3)]
+  [InlineData(4)]
+  [InlineData(5)]
+  public void Error_Password_Invalid(int passwordLength)
+  {
+    var validator = new CreateUserValidator();
+    var request = CreateUserRequestBuilder.Build(passwordLength);
+    var result = validator.Validate(request);
+
+    result.IsValid.Should().BeFalse();
+
+    result.Errors.Should().ContainSingle()
+      .And.Contain(e => e.ErrorMessage.Equals(ResourceMessagesException.PASSWORD_EMPTY));
   }
 }
