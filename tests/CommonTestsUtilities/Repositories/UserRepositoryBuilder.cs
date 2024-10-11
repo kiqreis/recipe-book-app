@@ -5,10 +5,15 @@ namespace CommonTestsUtilities.Repositories;
 
 public class UserRepositoryBuilder
 {
-  public static IUserRepository Build()
-  {
-    var mock = new Mock<IUserRepository>();
+  private readonly Mock<IUserRepository> _repository;
 
-    return mock.Object;
-  }
+  public UserRepositoryBuilder() => _repository = new Mock<IUserRepository>();
+
+  public IUserRepository Build() => _repository.Object;
+  
+  public void IsActiveUserWithEmail(string email)
+  {
+    _repository.Setup(repository => repository.IsActiveUserWithEmail(email))
+      .ReturnsAsync(true);
+  } 
 }
