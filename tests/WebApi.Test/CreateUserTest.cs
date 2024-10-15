@@ -54,7 +54,34 @@ public class CreateUserTest(CustomWebApplicationFactory factory) : IClassFixture
 
     var responseData = await JsonDocument.ParseAsync(responseBody);
     var errors = responseData.RootElement.GetProperty("errors").EnumerateArray();
-    var expectedMessage = ResourceMessagesException.ResourceManager.GetString("EMPTY_NAME", new CultureInfo(culture));
+    var expectedMessage = ResourceMessagesException.ResourceManager.GetString("NAME_EMPTY", new CultureInfo(culture));
+
+    errors.Should().ContainSingle().And.Contain(e => e.GetString()!.Equals(expectedMessage));
+  }
+
+  [Theory]
+  [ClassData(typeof(CultureInlineData))]
+  public async Task Error_Invalid_Email(string culture)
+  {
+    var request = CreateUserRequestBuilder.Build();
+    request.Email = string.Empty;
+
+    if (_httpClient.DefaultRequestHeaders.Contains("Accept-Language"))
+    {
+      _httpClient.DefaultRequestHeaders.Remove("Accept-Language");
+    }
+
+    _httpClient.DefaultRequestHeaders.Add("Accept-Language", culture);
+
+    var response = await _httpClient.PostAsJsonAsync("User", request);
+
+    response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+
+    await using var responseBody = await response.Content.ReadAsStreamAsync();
+
+    var responseData = await JsonDocument.ParseAsync(responseBody);
+    var errors = responseData.RootElement.GetProperty("errors").EnumerateArray();
+    var expectedMessage = ResourceMessagesException.ResourceManager.GetString("EMAIL_EMPTY", new CultureInfo(culture));
 
     errors.Should().ContainSingle().And.Contain(e => e.GetString()!.Equals(expectedMessage));
   }
