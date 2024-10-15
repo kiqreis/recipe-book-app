@@ -18,7 +18,7 @@ public class CreateUserValidatorTest
   }
 
   [Fact]
-  public void Error_Name_Empty()
+  public void Error_Empty_Name()
   {
     var validator = new CreateUserValidator();
     var request = CreateUserRequestBuilder.Build();
@@ -34,7 +34,7 @@ public class CreateUserValidatorTest
   }
 
   [Fact]
-  public void Error_Email_Empty()
+  public void Error_Empty_Email()
   {
     var validator = new CreateUserValidator();
     var request = CreateUserRequestBuilder.Build();
