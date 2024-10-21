@@ -11,13 +11,14 @@ namespace WebApi.Test;
 
 public class CreateUserTest(CustomWebApplicationFactory factory) : IClassFixture<CustomWebApplicationFactory>
 {
+  private readonly string method = "user";
   private readonly HttpClient _httpClient = factory.CreateClient();
 
   [Fact]
   public async Task Success()
   {
     var request = CreateUserRequestBuilder.Build();
-    var response = await _httpClient.PostAsJsonAsync("User", request);
+    var response = await _httpClient.PostAsJsonAsync(method, request);
 
     response.StatusCode.Should().Be(HttpStatusCode.Created);
 
@@ -46,7 +47,7 @@ public class CreateUserTest(CustomWebApplicationFactory factory) : IClassFixture
 
     _httpClient.DefaultRequestHeaders.Add("Accept-Language", culture);
 
-    var response = await _httpClient.PostAsJsonAsync("User", request);
+    var response = await _httpClient.PostAsJsonAsync(method, request);
 
     response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
 
@@ -73,7 +74,7 @@ public class CreateUserTest(CustomWebApplicationFactory factory) : IClassFixture
 
     _httpClient.DefaultRequestHeaders.Add("Accept-Language", culture);
 
-    var response = await _httpClient.PostAsJsonAsync("User", request);
+    var response = await _httpClient.PostAsJsonAsync(method, request);
 
     response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
 

@@ -17,6 +17,8 @@ builder.Services.AddMvc(opt => opt.Filters.Add(typeof(ExceptionFilter)));
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
 
+builder.Services.AddRouting(opt => opt.LowercaseUrls = true);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
