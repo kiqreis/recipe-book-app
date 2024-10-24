@@ -1,3 +1,4 @@
+using MyRecipeBook.Api.Converters;
 using MyRecipeBook.Api.Filters;
 using MyRecipeBook.Api.Middleware;
 using MyRecipeBook.Application;
@@ -8,6 +9,11 @@ using MyRecipeBook.Infrastructure.Migrations;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddControllers().AddJsonOptions(opt =>
+{
+  opt.JsonSerializerOptions.Converters.Add(new StringConverter());
+});
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

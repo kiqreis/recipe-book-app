@@ -11,7 +11,7 @@ public class UserController : ControllerBase
 {
   [HttpPost]
   [ProducesResponseType<CreateUserResponse>(StatusCodes.Status201Created)]
-  [ProducesResponseType<CreateUserResponse>(StatusCodes.Status400BadRequest)]
+  [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
   public async Task<IActionResult> Create(CreateUserRequest request, [FromServices] ICreateUser createUser)
   {
     return Created(string.Empty, await createUser.Execute(request));
