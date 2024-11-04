@@ -11,7 +11,7 @@ public class PasswordEncrypt
 
     RandomNumberGenerator.Fill(salt);
 
-    var bytes = Encoding.ASCII.GetBytes($"{password}{Convert.ToBase64String(salt)}");
+    var bytes = Encoding.ASCII.GetBytes($"{password}qQuLjh6JAws497M");
     var hashBytes = SHA512.HashData(bytes);
 
     return StringBytes(hashBytes);

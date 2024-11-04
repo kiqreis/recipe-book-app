@@ -9,7 +9,6 @@ using MyRecipeBook.Exceptions;
 using MyRecipeBook.Exceptions.ExceptionBase;
 using MyRecipeBook.Communication.Requests;
 
-
 public class LoginUserTest
 {
   [Fact]
