@@ -18,7 +18,7 @@ public class CreateUser(IMapper mapper, PasswordEncrypt encrypt, IUserRepository
     await Validate(request);
 
     var user = mapper.Map<User>(request);
-    user.Password = encrypt.Encrypt(user.Password);
+    user.Password = encrypt.Encrypt(request.Password);
 
     await repository.Add(user);
     await unitOfWork.CommitAsync();

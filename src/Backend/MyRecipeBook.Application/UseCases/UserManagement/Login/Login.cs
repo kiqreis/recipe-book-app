@@ -15,7 +15,7 @@ public class Login(IUserRepository repository, PasswordEncrypt encrypt) : ILogin
 
     return new CreateUserResponse
     {
-      Name = user.Name,
+      Name = user.Name
     };
   }
 }

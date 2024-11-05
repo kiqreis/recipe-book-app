@@ -7,10 +7,6 @@ public class PasswordEncrypt
 {
   public string Encrypt(string password)
   {
-    var salt = new byte[16];
-
-    RandomNumberGenerator.Fill(salt);
-
     var bytes = Encoding.ASCII.GetBytes($"{password}qQuLjh6JAws497M");
     var hashBytes = SHA512.HashData(bytes);
 
