@@ -2,11 +2,12 @@
 using MyRecipeBook.Communication.Requests;
 using MyRecipeBook.Communication.Responses;
 using MyRecipeBook.Domain.Repositories.UserRepository;
+using MyRecipeBook.Domain.Security.Token;
 using MyRecipeBook.Exceptions.ExceptionBase;
 
 namespace MyRecipeBook.Application.UseCases.UserManagement.Login;
 
-public class Login(IUserRepository repository, PasswordEncrypt encrypt) : ILogin
+public class Login(IUserRepository repository, PasswordEncrypt encrypt, IAccessTokenGenerator accessToken) : ILogin
 {
   public async Task<CreateUserResponse> Execute(RequestLogin request)
   {
@@ -15,7 +16,11 @@ public class Login(IUserRepository repository, PasswordEncrypt encrypt) : ILogin
 
     return new CreateUserResponse
     {
-      Name = user.Name
+      Name = user.Name,
+      Token = new TokenResponse
+      {
+        AccessToken = accessToken.Generate(user.UserId)
+      }
     };
   }
 }

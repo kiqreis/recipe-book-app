@@ -8,4 +8,6 @@ public class CreateUserResponse
 
   [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
   public string? Email { get; set; }
+
+  public TokenResponse Token { get; set; } = default!;
 }

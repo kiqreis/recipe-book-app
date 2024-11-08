@@ -4,31 +4,34 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MyRecipeBook.Domain.Repositories;
 using MyRecipeBook.Domain.Repositories.UserRepository;
+using MyRecipeBook.Domain.Security.Token;
 using MyRecipeBook.Infrastructure.DataAccess;
 using MyRecipeBook.Infrastructure.DataAccess.Repositories;
 using MyRecipeBook.Infrastructure.Extensions;
+using MyRecipeBook.Infrastructure.Security.Token.Access.Generator;
 using System.Reflection;
 
 namespace MyRecipeBook.Infrastructure;
 
 public static class DependencyInjectionExtension
 {
-  public static void AddInfrastructure(this IServiceCollection services, IConfiguration builder)
+  public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
   {
     AddRepositories(services);
+    AddToken(services, configuration);
 
-    if (builder.IsUnitTestEnvironment())
+    if (configuration.IsUnitTestEnvironment())
     {
       return;
     }
 
-    AddAppDbContext(services, builder);
-    AddFluentMigrator(services, builder);
+    AddAppDbContext(services, configuration);
+    AddFluentMigrator(services, configuration);
   }
 
-  private static void AddAppDbContext(IServiceCollection services, IConfiguration builder)
+  private static void AddAppDbContext(IServiceCollection services, IConfiguration configuration)
   {
-    var connectionString = builder.GetConnectionString("DefaultConnection");
+    var connectionString = configuration.GetConnectionString("DefaultConnection");
 
     services.AddDbContext<AppDbContext>(opt =>
     {
@@ -52,5 +55,13 @@ public static class DependencyInjectionExtension
       .WithGlobalConnectionString(connectionString)
       .ScanIn(Assembly.Load("MyRecipeBook.Infrastructure")).For.All();
     });
+  }
+
+  private static void AddToken(IServiceCollection services, IConfiguration configuration)
+  {
+    var expirationTimeMinutes = configuration.GetValue<uint>("Settings:Jwt:ExpirationTimeMinutes"); 
+    var signingKey = configuration.GetValue<string>("Settings:Jwt:SigningKey");
+
+    services.AddScoped<IAccessTokenGenerator>(opt => new JwtTokenGenerator(expirationTimeMinutes, signingKey!));
   }
 }

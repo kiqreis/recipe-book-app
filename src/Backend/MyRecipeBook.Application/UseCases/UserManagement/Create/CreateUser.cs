@@ -6,12 +6,13 @@ using MyRecipeBook.Communication.Responses;
 using MyRecipeBook.Domain.Entities;
 using MyRecipeBook.Domain.Repositories;
 using MyRecipeBook.Domain.Repositories.UserRepository;
+using MyRecipeBook.Domain.Security.Token;
 using MyRecipeBook.Exceptions;
 using MyRecipeBook.Exceptions.ExceptionBase;
 
 namespace MyRecipeBook.Application.UseCases.UserManagement.Create;
 
-public class CreateUser(IMapper mapper, PasswordEncrypt encrypt, IUserRepository repository, IUnitOfWork unitOfWork) : ICreateUser
+public class CreateUser(IMapper mapper, PasswordEncrypt encrypt, IUserRepository repository, IUnitOfWork unitOfWork, IAccessTokenGenerator accessToken) : ICreateUser
 {
   public async Task<CreateUserResponse> Execute(CreateUserRequest request)
   {
@@ -19,6 +20,7 @@ public class CreateUser(IMapper mapper, PasswordEncrypt encrypt, IUserRepository
 
     var user = mapper.Map<User>(request);
     user.Password = encrypt.Encrypt(request.Password);
+    user.UserId = Guid.NewGuid();
 
     await repository.Add(user);
     await unitOfWork.CommitAsync();
@@ -26,7 +28,11 @@ public class CreateUser(IMapper mapper, PasswordEncrypt encrypt, IUserRepository
     return new CreateUserResponse
     {
       Name = user.Name,
-      Email = user.Email
+      Email = user.Email,
+      Token = new TokenResponse
+      {
+        AccessToken = accessToken.Generate(user.UserId)
+      }
     };
   }
 
