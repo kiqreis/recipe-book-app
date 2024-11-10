@@ -31,6 +31,7 @@ public class CreateUserTest(CustomWebApplicationFactory factory) : IClassFixture
 
     responseData.RootElement.GetProperty("email").GetString().Should().NotBeNullOrWhiteSpace()
       .And.Be(request.Email);
+    responseData.RootElement.GetProperty("token").GetProperty("accessToken").GetString().Should().NotBeNullOrEmpty();
   }
 
   [Theory]

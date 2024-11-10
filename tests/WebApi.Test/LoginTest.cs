@@ -37,6 +37,7 @@ public class LoginTest(CustomWebApplicationFactory factory) : IClassFixture<Cust
 
     responseData.RootElement.GetProperty("name").GetString().Should().NotBeNullOrWhiteSpace()
       .And.Be(_name);
+    responseData.RootElement.GetProperty("token").GetProperty("accessToken").GetString().Should().NotBeNullOrEmpty();
   }
 
   [Theory]

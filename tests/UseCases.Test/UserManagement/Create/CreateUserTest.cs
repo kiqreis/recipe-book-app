@@ -2,6 +2,7 @@
 using CommonTestsUtilities.Mapper;
 using CommonTestsUtilities.Repositories;
 using CommonTestsUtilities.Requests;
+using CommonTestsUtilities.Token;
 using FluentAssertions;
 using MyRecipeBook.Application.UseCases.UserManagement.Create;
 using MyRecipeBook.Exceptions;
@@ -20,8 +21,10 @@ public class CreateUserTest
     var response = await useCase.Execute(request);
 
     response.Should().NotBeNull();
+    response.Token.Should().NotBeNull();
     response.Name.Should().Be(request.Name);
     response.Email.Should().Be(request.Email);
+    response.Token.AccessToken.Should().NotBeNullOrEmpty();
   }
 
   [Fact]
@@ -42,12 +45,13 @@ public class CreateUserTest
     var passwordEncrypt = PasswordEncryptBuilder.Build();
     var repository = new UserRepositoryBuilder();
     var unitOfWork = UnityOfWorkBuilder.Build();
+    var accessToken = JwtTokenGeneratorBuilder.Build();
 
     if (string.IsNullOrEmpty(email) == false)
     {
       repository.IsActiveUserWithEmail(email);
     }
 
-    return new CreateUser(mapper, passwordEncrypt, repository.Build(), unitOfWork);
+    return new CreateUser(mapper, passwordEncrypt, repository.Build(), unitOfWork, accessToken);
   }
 }

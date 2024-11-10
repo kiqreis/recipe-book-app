@@ -8,6 +8,7 @@ using MyRecipeBook.Domain.Entities;
 using MyRecipeBook.Exceptions;
 using MyRecipeBook.Exceptions.ExceptionBase;
 using MyRecipeBook.Communication.Requests;
+using CommonTestsUtilities.Token;
 
 public class LoginUserTest
 {
@@ -24,7 +25,9 @@ public class LoginUserTest
     });
 
     result.Should().NotBeNull();
+    result.Token.Should().NotBeNull();
     result.Name.Should().NotBeNullOrWhiteSpace().And.Be(user.Name);
+    result.Token.AccessToken.Should().NotBeNullOrEmpty();
   }
 
   [Fact]
@@ -43,12 +46,13 @@ public class LoginUserTest
   {
     var passwordEncrypt = PasswordEncryptBuilder.Build();
     var repository = new UserRepositoryBuilder();
+    var accessToken = JwtTokenGeneratorBuilder.Build();
 
     if (user != null)
     {
       repository.GetByEmailAndPassword(user);
     }
 
-    return new Login(repository.Build(), passwordEncrypt);
+    return new Login(repository.Build(), passwordEncrypt, accessToken);
   }
 }
