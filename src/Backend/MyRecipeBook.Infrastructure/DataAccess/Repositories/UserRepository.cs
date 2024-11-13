@@ -18,4 +18,9 @@ public class UserRepository(AppDbContext context) : IUserRepository
       .AsNoTracking()
       .FirstOrDefaultAsync(user => user.IsActive && user.Email.Equals(email) && user.Password.Equals(password));
   }
+
+  public async Task<bool> IsActiveUserWithIdentifier(Guid userId)
+  {
+    return await context.Users.AnyAsync(user => user.UserId.Equals(userId) && user.IsActive);
+  }
 }
