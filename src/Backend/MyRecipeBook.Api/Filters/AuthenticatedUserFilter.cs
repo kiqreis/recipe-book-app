@@ -39,7 +39,7 @@ public class AuthenticatedUserFilter(IAccessTokenValidator accessToken, IUserRep
     }
     catch
     {
-      context.Result = new UnauthorizedObjectResult(new ErrorResponse(ResourceMessagesException.USER));
+      context.Result = new UnauthorizedObjectResult(new ErrorResponse(ResourceMessagesException.USER_WITHOUT_PERMISSION_ACCESS_RESOURCE));
     }
   }
 

@@ -1,12 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using MyRecipeBook.Api.Attributes;
 using MyRecipeBook.Application.UseCases.UserManagement.Create;
+using MyRecipeBook.Application.UseCases.UserManagement.Profile;
 using MyRecipeBook.Communication.Requests;
 using MyRecipeBook.Communication.Responses;
 
 namespace MyRecipeBook.Api.Controllers;
 
-[AuthenticateUser]
 public class UserController : MyRecipeBookControllerBase
 {
   [HttpPost]
@@ -15,5 +15,15 @@ public class UserController : MyRecipeBookControllerBase
   public async Task<IActionResult> Create(CreateUserRequest request, [FromServices] ICreateUser createUser)
   {
     return Created(string.Empty, await createUser.Execute(request));
+  }
+
+  [HttpGet]
+  [ProducesResponseType<UserProfileResponse>(StatusCodes.Status200OK)]
+  [AuthenticateUser]
+  public async Task<IActionResult> GetUserProfile([FromServices] IGetUserProfile userProfile)
+  {
+    var result = await userProfile.Execute();
+
+    return Ok(result);
   }
 }
