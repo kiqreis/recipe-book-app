@@ -3,22 +3,20 @@ using FluentAssertions;
 using MyRecipeBook.Exceptions;
 using System.Globalization;
 using System.Net;
-using System.Net.Http.Json;
 using System.Text.Json;
 using WebApi.Test.InlineData;
 
-namespace WebApi.Test;
+namespace WebApi.Test.UserManagement.Create;
 
-public class CreateUserTest(CustomWebApplicationFactory factory) : IClassFixture<CustomWebApplicationFactory>
+public class CreateUserTest(CustomWebApplicationFactory factory) : MyRecipeBookClassFixture(factory)
 {
   private readonly string method = "user";
-  private readonly HttpClient _httpClient = factory.CreateClient();
 
   [Fact]
   public async Task Success()
   {
     var request = CreateUserRequestBuilder.Build();
-    var response = await _httpClient.PostAsJsonAsync(method, request);
+    var response = await Post(method, request);
 
     response.StatusCode.Should().Be(HttpStatusCode.Created);
 
@@ -41,14 +39,7 @@ public class CreateUserTest(CustomWebApplicationFactory factory) : IClassFixture
     var request = CreateUserRequestBuilder.Build();
     request.Name = string.Empty;
 
-    if (_httpClient.DefaultRequestHeaders.Contains("Accept-Language"))
-    {
-      _httpClient.DefaultRequestHeaders.Remove("Accept-Language");
-    }
-
-    _httpClient.DefaultRequestHeaders.Add("Accept-Language", culture);
-
-    var response = await _httpClient.PostAsJsonAsync(method, request);
+    var response = await Post(method, request, culture);
 
     response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
 
@@ -68,14 +59,7 @@ public class CreateUserTest(CustomWebApplicationFactory factory) : IClassFixture
     var request = CreateUserRequestBuilder.Build();
     request.Email = string.Empty;
 
-    if (_httpClient.DefaultRequestHeaders.Contains("Accept-Language"))
-    {
-      _httpClient.DefaultRequestHeaders.Remove("Accept-Language");
-    }
-
-    _httpClient.DefaultRequestHeaders.Add("Accept-Language", culture);
-
-    var response = await _httpClient.PostAsJsonAsync(method, request);
+    var response = await Post(method, request, culture);
 
     response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
 

@@ -4,19 +4,24 @@ using MyRecipeBook.Communication.Requests;
 using MyRecipeBook.Exceptions;
 using System.Globalization;
 using System.Net;
-using System.Net.Http.Json;
 using System.Text.Json;
 using WebApi.Test.InlineData;
 
-namespace WebApi.Test;
+namespace WebApi.Test.UserManagement.Login;
 
-public class LoginTest(CustomWebApplicationFactory factory) : IClassFixture<CustomWebApplicationFactory>
+public class LoginTest : MyRecipeBookClassFixture
 {
-  private readonly string _method = "login";
-  private readonly HttpClient _httpClient = factory.CreateClient();
-  private readonly string _email = factory.GetEmail();
-  private readonly string _name = factory.GetName();
-  private readonly string _password = factory.GetPassword();
+  private readonly string method = "login";
+  private readonly string _email;
+  private readonly string _name;
+  private readonly string _password;
+
+  public LoginTest(CustomWebApplicationFactory factory) : base(factory)
+  {
+    _email = factory.GetEmail();
+    _name = factory.GetName();
+    _password = factory.GetPassword();
+  }
 
   [Fact]
   public async Task Success()
@@ -27,7 +32,7 @@ public class LoginTest(CustomWebApplicationFactory factory) : IClassFixture<Cust
       Password = _password
     };
 
-    var response = await _httpClient.PostAsJsonAsync(_method, request);
+    var response = await Post(method, request);
 
     response.StatusCode.Should().Be(HttpStatusCode.OK);
 
@@ -46,14 +51,7 @@ public class LoginTest(CustomWebApplicationFactory factory) : IClassFixture<Cust
   {
     var request = LoginUserRequestBuilder.Build();
 
-    if (_httpClient.DefaultRequestHeaders.Contains("Accept-Language"))
-    {
-      _httpClient.DefaultRequestHeaders.Remove("Accept-Language");
-    }
-
-    _httpClient.DefaultRequestHeaders.Add("Accept-Language", culture);
-
-    var response = await _httpClient.PostAsJsonAsync(_method, request);
+    var response = await Post(method, request, culture);
 
     response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
 

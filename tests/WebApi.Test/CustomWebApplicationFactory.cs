@@ -42,6 +42,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
       });
   }
 
+  public Guid GetUserId() => _user.UserId;
   public string GetName() => _user.Name;
   public string GetEmail() => _user.Email;
   public string GetPassword() => _password;
