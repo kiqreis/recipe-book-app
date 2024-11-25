@@ -8,4 +8,6 @@ public interface IUserRepository
   public Task<bool> IsActiveUserWithEmail(string email);
   public Task<User?> GetByEmailAndPassword(string email, string password);
   public Task<bool> IsActiveUserWithIdentifier(Guid userId);
+  public Task<User> GetById(long id);
+  public void Update(User user);
 }

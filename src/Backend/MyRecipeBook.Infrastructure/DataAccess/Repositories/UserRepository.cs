@@ -23,4 +23,11 @@ public class UserRepository(AppDbContext context) : IUserRepository
   {
     return await context.Users.AnyAsync(user => user.UserId.Equals(userId) && user.IsActive);
   }
+
+  public async Task<User> GetById(long id)
+  {
+    return await context.Users.FirstAsync(user => user.Id == id);
+  }
+
+  public void Update(User user) => context.Users.Update(user);
 }
