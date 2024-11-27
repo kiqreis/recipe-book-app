@@ -23,4 +23,10 @@ public class UserRepositoryBuilder
     _repository.Setup(repository => repository.GetByEmailAndPassword(user.Email, user.Password))
       .ReturnsAsync(user);
   }
+
+  public UserRepositoryBuilder GetById(User user)
+  {
+    _repository.Setup(repository => repository.GetById(user.Id)).ReturnsAsync(user);
+    return this;
+  }
 }

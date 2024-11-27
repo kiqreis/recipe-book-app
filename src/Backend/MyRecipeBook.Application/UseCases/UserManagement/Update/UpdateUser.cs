@@ -29,9 +29,9 @@ public class UpdateUser(ILoggedUser _loggedUser, IUserRepository repository, IUn
   private async Task Validate(UpdateUserRequest request, string currentEmail)
   {
     var validator = new UpdateUserValidator();
-    var result = validator.Validate(request);
+    var result = await validator.ValidateAsync(request);
 
-    if (currentEmail.Equals(request.Email) is false)
+    if (currentEmail.Equals(request.Email) == false)
     {
       var userExist = await repository.IsActiveUserWithEmail(request.Email);
 
@@ -39,13 +39,13 @@ public class UpdateUser(ILoggedUser _loggedUser, IUserRepository repository, IUn
       {
         result.Errors.Add(new ValidationFailure("email", ResourceMessagesException.EMAIL_ALREADY_EXISTS));
       }
+    }
 
-      if (result.IsValid is false)
-      {
-        var errorMessages = result.Errors.Select(error => error.ErrorMessage).ToList();
+    if (result.IsValid == false)
+    {
+      var errorMessages = result.Errors.Select(error => error.ErrorMessage).ToList();
 
-        throw new RequestValidationException(errorMessages);
-      }
+      throw new RequestValidationException(errorMessages);
     }
   }
 }
