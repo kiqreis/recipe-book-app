@@ -1,13 +1,13 @@
-﻿using MyRecipeBook.Application.SecurityConfig;
-using MyRecipeBook.Communication.Requests;
+﻿using MyRecipeBook.Communication.Requests;
 using MyRecipeBook.Communication.Responses;
 using MyRecipeBook.Domain.Repositories.UserRepository;
+using MyRecipeBook.Domain.Security.Encryption;
 using MyRecipeBook.Domain.Security.Token;
 using MyRecipeBook.Exceptions.ExceptionBase;
 
 namespace MyRecipeBook.Application.UseCases.UserManagement.Login;
 
-public class Login(IUserRepository repository, PasswordEncrypt encrypt, IAccessTokenGenerator accessToken) : ILogin
+public class Login(IUserRepository repository, IPasswordEncrypt encrypt, IAccessTokenGenerator accessToken) : ILogin
 {
   public async Task<CreateUserResponse> Execute(RequestLogin request)
   {

@@ -33,9 +33,9 @@ public class UpdateUser(ILoggedUser _loggedUser, IUserRepository repository, IUn
 
     if (currentEmail.Equals(request.Email) == false)
     {
-      var userExist = await repository.IsActiveUserWithEmail(request.Email);
+      var userExists = await repository.IsActiveUserWithEmail(request.Email);
 
-      if (userExist)
+      if (userExists)
       {
         result.Errors.Add(new ValidationFailure("email", ResourceMessagesException.EMAIL_ALREADY_EXISTS));
       }

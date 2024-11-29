@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using MyRecipeBook.Application.SecurityConfig;
 using MyRecipeBook.Application.UseCases.UserManagement.Create;
 using MyRecipeBook.Application.UseCases.UserManagement.Login;
 using MyRecipeBook.Application.UseCases.UserManagement.Profile;
@@ -12,7 +11,6 @@ public static class DependencyInjectionExtension
   public static void AddApplication(this IServiceCollection services)
   {
     AddAutoMapper(services);
-    AddPasswordEncrypt(services);
     AddUseCases(services);
   }
 
@@ -27,10 +25,5 @@ public static class DependencyInjectionExtension
     services.AddScoped<ILogin, Login>();
     services.AddScoped<IGetUserProfile, GetUserProfile>();
     services.AddScoped<IUpdateUser, UpdateUser>();
-  }
-
-  private static void AddPasswordEncrypt(IServiceCollection services)
-  {
-    services.AddScoped<PasswordEncrypt>();
   }
 }

@@ -1,9 +1,10 @@
+﻿using MyRecipeBook.Domain.Security.Encryption;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace MyRecipeBook.Application.SecurityConfig;
+namespace MyRecipeBook.Infrastructure.Security.Encrypt;
 
-public class PasswordEncrypt
+public class Sha512PasswordEncrypt : IPasswordEncrypt
 {
   public string Encrypt(string password)
   {

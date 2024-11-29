@@ -1,8 +1,9 @@
-﻿using MyRecipeBook.Application.SecurityConfig;
+﻿using MyRecipeBook.Domain.Security.Encryption;
+using MyRecipeBook.Infrastructure.Security.Encrypt;
 
 namespace CommonTestsUtilities.Encrypt;
 
 public class PasswordEncryptBuilder
 {
-  public static PasswordEncrypt Build() => new PasswordEncrypt();
+  public static IPasswordEncrypt Build() => new Sha512PasswordEncrypt();
 }
