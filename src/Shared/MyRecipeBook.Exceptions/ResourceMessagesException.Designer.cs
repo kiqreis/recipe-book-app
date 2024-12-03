@@ -61,6 +61,15 @@ namespace MyRecipeBook.Exceptions {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a The password entered is different from the current password.
+        /// </summary>
+        public static string DIFFERENT_PASSWORD_FROM_THE_CURRENT {
+            get {
+                return ResourceManager.GetString("DIFFERENT_PASSWORD_FROM_THE_CURRENT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a This email already exists.
         /// </summary>
         public static string EMAIL_ALREADY_EXISTS {
@@ -120,6 +129,15 @@ namespace MyRecipeBook.Exceptions {
         public static string PASSWORD_EMPTY {
             get {
                 return ResourceManager.GetString("PASSWORD_EMPTY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a The password field is invalid.
+        /// </summary>
+        public static string PASSWORD_INVALID {
+            get {
+                return ResourceManager.GetString("PASSWORD_INVALID", resourceCulture);
             }
         }
         

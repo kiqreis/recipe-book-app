@@ -1,4 +1,5 @@
 using FluentValidation;
+using MyRecipeBook.Application.SharedValidators;
 using MyRecipeBook.Communication.Requests;
 using MyRecipeBook.Exceptions;
 
@@ -10,7 +11,7 @@ public class CreateUserValidator : AbstractValidator<CreateUserRequest>
   {
     RuleFor(u => u.Name).NotEmpty().WithMessage(ResourceMessagesException.NAME_EMPTY);
     RuleFor(u => u.Email).NotEmpty().WithMessage(ResourceMessagesException.EMAIL_EMPTY);
-    RuleFor(u => u.Password.Length).GreaterThanOrEqualTo(6).WithMessage(ResourceMessagesException.PASSWORD_EMPTY);
+    RuleFor(u => u.Password).SetValidator(new PasswordValidator<CreateUserRequest>());
 
     When(u => string.IsNullOrEmpty(u.Email) == false, () =>
     {

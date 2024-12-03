@@ -32,7 +32,7 @@ public class AuthenticatedUserFilter(IAccessTokenValidator accessToken, IUserRep
     }
     catch (SecurityTokenExpiredException)
     {
-      context.Result = new UnauthorizedObjectResult(new ErrorResponse("The token in expired")
+      context.Result = new UnauthorizedObjectResult(new ErrorResponse("The token is expired")
       {
         TokenIsExpired = true
       });

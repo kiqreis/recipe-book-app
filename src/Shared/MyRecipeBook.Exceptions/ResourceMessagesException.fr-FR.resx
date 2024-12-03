@@ -144,4 +144,10 @@
   <data name="USER_WITHOUT_PERMISSION_ACCESS_RESOURCE" xml:space="preserve">
     <value>L'utilisateur n'a pas la permission d'accéder au contenu</value>
   </data>
+  <data name="PASSWORD_INVALID" xml:space="preserve">
+    <value>Le champ du mot de passe n'est pas valide</value>
+  </data>
+  <data name="DIFFERENT_PASSWORD_FROM_THE_CURRENT" xml:space="preserve">
+    <value>Le champ du mot de passe n'est pas valide</value>
+  </data>
 </root>
