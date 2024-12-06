@@ -9,7 +9,7 @@ public class UserRepository(AppDbContext context) : IUserRepository
   public async Task Add(User user) => await context.Users.AddAsync(user);
 
   public async Task<bool> IsActiveUserWithEmail(string email) => await context
-    .Users.AnyAsync(u => u.Email.Equals(email) && u.IsActive);
+    .Users.AnyAsync(user => user.Email.Equals(email) && user.IsActive);
 
   public async Task<User?> GetByEmailAndPassword(string email, string password)
   {

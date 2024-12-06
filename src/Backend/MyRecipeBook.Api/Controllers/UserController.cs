@@ -31,6 +31,7 @@ public class UserController : MyRecipeBookControllerBase
 
   [HttpPut]
   [ProducesResponseType(StatusCodes.Status204NoContent)]
+  [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
   [AuthenticateUser]
   public async Task<IActionResult> Update([FromServices] IUpdateUser updateUser, UpdateUserRequest request)
   {
@@ -42,6 +43,7 @@ public class UserController : MyRecipeBookControllerBase
   [HttpPut("change-password")]
   [ProducesResponseType(StatusCodes.Status204NoContent)]
   [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
+  [AuthenticateUser]
   public async Task<IActionResult> ChangePassword([FromServices] IChangePassword changePassword, ChangePasswordRequest request)
   {
     await changePassword.Execute(request);

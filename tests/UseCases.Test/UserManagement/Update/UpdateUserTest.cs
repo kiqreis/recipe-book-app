@@ -55,7 +55,7 @@ public class UpdateUserTest
 
     Func<Task> action = async () => await useCase.Execute(request);
 
-    (await action.Should().ThrowAsync<RequestValidationException>())
+    await action.Should().ThrowAsync<RequestValidationException>()
       .Where(e => e.ErrorMessages.Count == 1 && e.ErrorMessages.Contains(ResourceMessagesException.EMAIL_ALREADY_EXISTS));
 
     user.Name.Should().NotBe(request.Name);
@@ -71,7 +71,7 @@ public class UpdateUserTest
 
     if (string.IsNullOrEmpty(email) == false)
     {
-      userRepository.IsActiveUserWithEmail(email!);
+      userRepository.IsActiveUserWithEmail(email);
     }
 
     return new UpdateUser(loggedUser, repository, unitOfWork);

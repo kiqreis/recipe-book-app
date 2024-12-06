@@ -6,6 +6,7 @@ using MyRecipeBook.Domain.Repositories.UserRepository;
 using MyRecipeBook.Domain.Security.Token;
 using MyRecipeBook.Exceptions;
 using MyRecipeBook.Exceptions.ExceptionBase;
+using System.Net;
 
 namespace MyRecipeBook.Api.Filters;
 
@@ -28,6 +29,7 @@ public class AuthenticatedUserFilter(IAccessTokenValidator accessToken, IUserRep
     }
     catch (MyRecipeBookException e)
     {
+      context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
       context.Result = new UnauthorizedObjectResult(new ErrorResponse(e.Message));
     }
     catch (SecurityTokenExpiredException)
