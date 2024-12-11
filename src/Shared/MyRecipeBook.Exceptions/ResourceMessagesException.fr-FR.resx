@@ -150,4 +150,13 @@
   <data name="DIFFERENT_PASSWORD_FROM_THE_CURRENT" xml:space="preserve">
     <value>Le champ du mot de passe n'est pas valide</value>
   </data>
+  <data name="RECIPE_TITLE_EMPTY" xml:space="preserve">
+    <value>Le titre de la recette est resté vide. Veuillez fournir un titre valide</value>
+  </data>
+  <data name="COOKING_TIME_NOT_SUPPORTED" xml:space="preserve">
+    <value>Le type de plat choisi n'est pas pris en charge</value>
+  </data>
+  <data name="DIFFICULTY_LEVEL_NOT_SUPPORTED" xml:space="preserve">
+    <value>Le niveau de difficulté spécifié pour la recette n'est pas pris en charge</value>
+  </data>
 </root>

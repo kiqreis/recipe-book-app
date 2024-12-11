@@ -1,0 +1,15 @@
+﻿using FluentValidation;
+using MyRecipeBook.Communication.Requests;
+using MyRecipeBook.Exceptions;
+
+namespace MyRecipeBook.Application.UseCases.UserManagement.Recipe;
+
+public class RecipeValidator : AbstractValidator<RecipeRequest>
+{
+  public RecipeValidator()
+  {
+    RuleFor(recipe => recipe.Title).NotEmpty().WithMessage(ResourceMessagesException.RECIPE_TITLE_EMPTY);
+    RuleFor(recipe => recipe.CookingTime).IsInEnum().WithMessage(ResourceMessagesException.COOKING_TIME_NOT_SUPPORTED);
+    RuleFor(recipe => recipe.Difficulty).IsInEnum().WithMessage(ResourceMessagesException.DIFFICULTY_LEVEL_NOT_SUPPORTED);
+  }
+}
