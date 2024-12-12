@@ -159,4 +159,28 @@
   <data name="DIFFICULTY_LEVEL_NOT_SUPPORTED" xml:space="preserve">
     <value>Le niveau de difficulté spécifié pour la recette n'est pas pris en charge</value>
   </data>
+  <data name="AT_LEAST_ONE_INGREDIENT" xml:space="preserve">
+    <value>Notez qu'au moins un ingrédient est requis</value>
+  </data>
+  <data name="AT_LEAST_ONE_INSTRUCTION" xml:space="preserve">
+    <value>Veuillez vous assurer qu'il y a au moins une instruction fournie pour la recette</value>
+  </data>
+  <data name="DISH_TYPE_NOT_SUPPORTED" xml:space="preserve">
+    <value>Le type de plat choisi n'est pas pris en charge</value>
+  </data>
+  <data name="INGREDIENT_EMPTY" xml:space="preserve">
+    <value>L'ingrédient est laissé vide, veuillez fournir une valeur valide</value>
+  </data>
+  <data name="NON_NEGATIVE_INSTRUCTION_STEP" xml:space="preserve">
+    <value>Utiliser une valeur non négative pour l'étape d'instruction</value>
+  </data>
+  <data name="INSTRUCTION_EMPTY" xml:space="preserve">
+    <value>L'instruction est laissée vide, veuillez fournir une instruction valide</value>
+  </data>
+  <data name="INSTRUCTION_EXCEEDS_LIMIT_CHARACTERS" xml:space="preserve">
+    <value>L'instruction dépasse la limite maximale de 255 caractères</value>
+  </data>
+  <data name="TWO_OR_MORE_INSTRUCTIONS_SAME_ORDER" xml:space="preserve">
+    <value>Lorsque vous ajoutez des instructions, assurez-vous que chacune d’entre elles possède un numéro d’étape unique. Deux instructions ou plus ne peuvent pas avoir la même étape</value>
+  </data>
 </root>
