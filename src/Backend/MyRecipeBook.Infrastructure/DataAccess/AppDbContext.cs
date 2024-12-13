@@ -8,6 +8,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> context) : DbContext(co
 {
   public DbSet<User> Users { get; set; }
 
+  public DbSet<Recipe> Recipes { get; set; }
+
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
     modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
