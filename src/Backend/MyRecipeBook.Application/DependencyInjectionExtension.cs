@@ -27,7 +27,6 @@ public static class DependencyInjectionExtension
       MinLength = 3,
       Alphabet = configuration.GetValue<string>("Settings:IdCryptographyAlphabet")!
     });
-
     //services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
     services.AddScoped(options => new MapperConfiguration(opt =>
     {

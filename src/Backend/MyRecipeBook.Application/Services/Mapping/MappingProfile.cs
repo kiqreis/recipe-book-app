@@ -30,7 +30,7 @@ public class MappingProfile : Profile
     CreateMap<string, Ingredient>()
       .ForMember(dest => dest.Item, opt => opt.MapFrom(source => source));
 
-    CreateMap<Domain.Enums.DishType, DishType>()
+    CreateMap<Communication.Enums.DishType, DishType>()
       .ForMember(dest => dest.Type, opt => opt.MapFrom(source => source));
 
     CreateMap<InstructionRequest, Instruction>();
