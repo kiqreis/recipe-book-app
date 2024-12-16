@@ -11,7 +11,7 @@ public class UpdateUserValidator : AbstractValidator<UpdateUserRequest>
     RuleFor(request => request.Name).NotEmpty().WithMessage(ResourceMessagesException.NAME_EMPTY);
     RuleFor(request => request.Email).NotEmpty().WithMessage(ResourceMessagesException.EMAIL_EMPTY);
 
-    When(request => string.IsNullOrEmpty(request.Email) is false, () =>
+    When(request => string.IsNullOrEmpty(request.Email) == false, () =>
     {
       RuleFor(request => request.Email).EmailAddress().WithMessage(ResourceMessagesException.EMAIL_INVALID);
     });

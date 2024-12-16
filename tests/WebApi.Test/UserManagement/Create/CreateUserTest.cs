@@ -16,7 +16,7 @@ public class CreateUserTest(CustomWebApplicationFactory factory) : MyRecipeBookC
   public async Task Success()
   {
     var request = CreateUserRequestBuilder.Build();
-    var response = await Post(method, request);
+    var response = await Post(method: method, request: request);
 
     response.StatusCode.Should().Be(HttpStatusCode.Created);
 
@@ -39,7 +39,7 @@ public class CreateUserTest(CustomWebApplicationFactory factory) : MyRecipeBookC
     var request = CreateUserRequestBuilder.Build();
     request.Name = string.Empty;
 
-    var response = await Post(method, request, culture);
+    var response = await Post(method: method, request: request, culture: culture);
 
     response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
 
@@ -59,7 +59,7 @@ public class CreateUserTest(CustomWebApplicationFactory factory) : MyRecipeBookC
     var request = CreateUserRequestBuilder.Build();
     request.Email = string.Empty;
 
-    var response = await Post(method, request, culture);
+    var response = await Post(method: method, request: request, culture: culture);
 
     response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
 

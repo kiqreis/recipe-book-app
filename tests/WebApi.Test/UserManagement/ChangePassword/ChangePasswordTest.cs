@@ -43,12 +43,12 @@ public class ChangePasswordTest : MyRecipeBookClassFixture
       Password = _password
     };
 
-    response = await Post("login", loginRequest);
+    response = await Post("login", request: loginRequest);
     response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
 
     loginRequest.Password = request.NewPassword;
 
-    response = await Post("login", loginRequest);
+    response = await Post("login", request: loginRequest);
 
     response.StatusCode.Should().Be(HttpStatusCode.OK);
   }

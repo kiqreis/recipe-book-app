@@ -32,7 +32,7 @@ public class LoginTest : MyRecipeBookClassFixture
       Password = _password
     };
 
-    var response = await Post(method, request);
+    var response = await Post(method: method, request: request);
 
     response.StatusCode.Should().Be(HttpStatusCode.OK);
 
@@ -51,7 +51,7 @@ public class LoginTest : MyRecipeBookClassFixture
   {
     var request = LoginUserRequestBuilder.Build();
 
-    var response = await Post(method, request, culture);
+    var response = await Post(method: method, request: request, culture: culture);
 
     response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
 
