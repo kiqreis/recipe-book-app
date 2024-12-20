@@ -18,7 +18,7 @@ public class RecipeController : MyRecipeBookControllerBase
     return Created(string.Empty, response);
   }
 
-  [HttpPost]
+  [HttpPost("filter")]
   [ProducesResponseType<RecipesResponse>(StatusCodes.Status200OK)]
   [ProducesResponseType(StatusCodes.Status204NoContent)]
   public async Task<IActionResult> Filter([FromServices] IFilterRecipe filterRecipe, RecipeFilterRequest request)

@@ -4,8 +4,8 @@ namespace MyRecipeBook.Domain.Dtos;
 
 public record FilterRecipeDto
 {
-  public string? RecipeTitleIngredient { get; set; }
-  public IList<CookingTime> CookingTimes { get; set; } = [];
-  public IList<Difficulty> Difficulties { get; set; } = [];
-  public IList<DishType> DishTypes { get; set; } = [];
+  public string? RecipeTitleIngredient { get; init; }
+  public IList<CookingTime> CookingTimes { get; init; } = [];
+  public IList<Difficulty> Difficulties { get; init; } = [];
+  public IList<DishType> DishTypes { get; init; } = [];
 }

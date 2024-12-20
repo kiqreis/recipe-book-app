@@ -12,6 +12,7 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
   public async Task<IList<Recipe>> Filter(User user, FilterRecipeDto filters)
   {
     var query = context.Recipes.AsNoTracking()
+      .Include(recipe => recipe.Ingredients)
       .Where(recipe => recipe.IsActive && recipe.UserId == user.Id);
 
     if (filters.Difficulties.Any())
@@ -29,12 +30,10 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
       query = query.Where(recipe => recipe.DishTypes.Any(dishType => filters.DishTypes.Contains(dishType.Type)));
     }
 
-    if (!string.IsNullOrEmpty(filters.RecipeTitleIngredient))
+    if (!string.IsNullOrWhiteSpace(filters.RecipeTitleIngredient))
     {
       query = query.Where(recipe => recipe.Title.Contains(filters.RecipeTitleIngredient) || recipe.Ingredients.Any(ingredient =>
-      {
-        ingredient.Item.Contains(filters.RecipeTitleIngredient);
-      }));
+        ingredient.Item.Contains(filters.RecipeTitleIngredient)));
     }
 
     return await query.ToListAsync();

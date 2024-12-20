@@ -1,12 +1,15 @@
 ﻿using AutoMapper;
 using MyRecipeBook.Communication.Requests;
 using MyRecipeBook.Communication.Responses;
+using MyRecipeBook.Domain.Dtos;
+using MyRecipeBook.Domain.Enums;
+using MyRecipeBook.Domain.Repositories.RecipeRepository;
 using MyRecipeBook.Domain.Services.LoggedUser;
 using MyRecipeBook.Exceptions.ExceptionBase;
 
 namespace MyRecipeBook.Application.UseCases.RecipeManagement.Filter;
 
-public class FilterRecipe(IMapper mapper, ILoggedUser _loggedUser) : IFilterRecipe
+public class FilterRecipe(IMapper mapper, ILoggedUser _loggedUser, IRecipeRepository repository) : IFilterRecipe
 {
   public async Task<RecipesResponse> Execute(RecipeFilterRequest request)
   {
@@ -14,9 +17,19 @@ public class FilterRecipe(IMapper mapper, ILoggedUser _loggedUser) : IFilterReci
 
     var loggedUser = await _loggedUser.User();
 
+    var filters = new FilterRecipeDto
+    {
+      RecipeTitleIngredient = request.RecipeTitleIngredient,
+      CookingTimes = request.CookingTimes.Distinct().Select(c => (CookingTime)c).ToList(),
+      Difficulties = request.Difficulties.Distinct().Select(d => (Difficulty)d).ToList(),
+      DishTypes = request.DishTypes.Distinct().Select(d => (DishType)d).ToList()
+    };
+
+    var recipes = await repository.Filter(loggedUser, filters);
+
     return new RecipesResponse
     {
-      Recipes = []
+      Recipes = mapper.Map<List<RecipeResponseShort>>(recipes)
     };
   }
 

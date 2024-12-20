@@ -37,5 +37,9 @@ public class MappingProfile : Profile
 
     CreateMap<Recipe, CreatedRecipeResponse>()
       .ForMember(dest => dest.Id, opt => opt.MapFrom(source => _encoder.Encode(source.Id)));
+
+    CreateMap<Recipe, RecipeResponseShort>()
+      .ForMember(dest => dest.Id, opt => opt.MapFrom(source => _encoder.Encode(source.Id)))
+      .ForMember(dest => dest.AmountIngredients, opt => opt.MapFrom(source => source.Ingredients.Count));
   }
 }
