@@ -47,8 +47,8 @@ public class CreateRecipeTest
     var mapper = MapperBuilder.Build();
     var unitOfWork = UnityOfWorkBuilder.Build();
     var loggedUser = LoggedUserBuilder.Build(user);
-    var repository = RecipeRepositoryBuilder.Build();
+    var repository = new RecipeRepositoryBuilder();
 
-    return new CreateRecipe(repository, loggedUser, unitOfWork, mapper);
+    return new CreateRecipe(repository.Build(), loggedUser, unitOfWork, mapper);
   }
 }
