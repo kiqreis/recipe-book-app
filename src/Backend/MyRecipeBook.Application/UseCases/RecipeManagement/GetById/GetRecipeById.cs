@@ -14,11 +14,6 @@ public class GetRecipeById(IMapper mapper, ILoggedUser _loggedUser, IRecipeRepos
     var loggedUser = await _loggedUser.User();
     var recipe = await repository.GetById(loggedUser, id);
 
-    if (recipe == null)
-    {
-      throw new NotFoundException(ResourceMessagesException.RECIPE_NOT_FOUND);
-    }
-
-    return mapper.Map<RecipeResponse>(recipe);
+    return recipe == null ? throw new NotFoundException(ResourceMessagesException.RECIPE_NOT_FOUND) : mapper.Map<RecipeResponse>(recipe);
   }
 }
