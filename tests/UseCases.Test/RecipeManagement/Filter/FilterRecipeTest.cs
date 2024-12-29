@@ -45,7 +45,7 @@ public class FilterRecipeTest
     };
 
     (await action.Should().ThrowAsync<RequestValidationException>())
-      .Where(e => e.ErrorMessages.Count == 1 && e.ErrorMessages.Contains(ResourceMessagesException.COOKING_TIME_NOT_SUPPORTED));
+      .Where(e => e.GetErrorMessages().Count == 1 && e.GetErrorMessages().Contains(ResourceMessagesException.COOKING_TIME_NOT_SUPPORTED));
   }
 
   [Fact]
@@ -65,7 +65,7 @@ public class FilterRecipeTest
     };
 
     (await action.Should().ThrowAsync<RequestValidationException>())
-      .Where(e => e.ErrorMessages.Count == 1 && e.ErrorMessages.Contains(ResourceMessagesException.DIFFICULTY_LEVEL_NOT_SUPPORTED));
+      .Where(e => e.GetErrorMessages().Count == 1 && e.GetErrorMessages().Contains(ResourceMessagesException.DIFFICULTY_LEVEL_NOT_SUPPORTED));
   }
 
   [Fact]
@@ -85,7 +85,7 @@ public class FilterRecipeTest
     };
 
     (await action.Should().ThrowAsync<RequestValidationException>())
-      .Where(e => e.ErrorMessages.Count == 1 && e.ErrorMessages.Contains(ResourceMessagesException.DISH_TYPE_NOT_SUPPORTED));
+      .Where(e => e.GetErrorMessages().Count == 1 && e.GetErrorMessages().Contains(ResourceMessagesException.DISH_TYPE_NOT_SUPPORTED));
   }
 
   private static FilterRecipe FilterRecipe(User user, IList<Recipe> recipes)

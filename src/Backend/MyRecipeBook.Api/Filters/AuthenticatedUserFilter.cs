@@ -24,7 +24,7 @@ public class AuthenticatedUserFilter(IAccessTokenValidator accessToken, IUserRep
 
       if (exists == false)
       {
-        throw new MyRecipeBookException(ResourceMessagesException.USER_WITHOUT_PERMISSION_ACCESS_RESOURCE);
+        throw new UnauthorizedException(ResourceMessagesException.USER_WITHOUT_PERMISSION_ACCESS_RESOURCE);
       }
     }
     catch (MyRecipeBookException e)
@@ -51,7 +51,7 @@ public class AuthenticatedUserFilter(IAccessTokenValidator accessToken, IUserRep
 
     if (string.IsNullOrWhiteSpace(authentication))
     {
-      throw new MyRecipeBookException(ResourceMessagesException.NO_TOKEN);
+      throw new UnauthorizedException(ResourceMessagesException.NO_TOKEN);
     }
 
     return authentication["Bearer ".Length..].Trim();

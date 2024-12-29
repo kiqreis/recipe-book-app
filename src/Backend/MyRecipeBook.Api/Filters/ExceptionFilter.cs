@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using MyRecipeBook.Communication.Responses;
 using MyRecipeBook.Exceptions;
 using MyRecipeBook.Exceptions.ExceptionBase;
-using System.Net;
 
 namespace MyRecipeBook.Api.Filters;
 
@@ -11,9 +10,9 @@ public class ExceptionFilter : IExceptionFilter
 {
   public void OnException(ExceptionContext context)
   {
-    if (context.Exception is MyRecipeBookException)
+    if (context.Exception is MyRecipeBookException myRecipeBookException)
     {
-      HandleProjectException(context);
+      HandleProjectException(myRecipeBookException, context);
     }
     else
     {
@@ -21,25 +20,15 @@ public class ExceptionFilter : IExceptionFilter
     }
   }
 
-  private void HandleProjectException(ExceptionContext context)
+  private static void HandleProjectException(MyRecipeBookException myRecipeBookException, ExceptionContext context)
   {
-    if (context.Exception is RequestValidationException)
-    {
-      var exception = context.Exception as RequestValidationException;
-
-      context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-      context.Result = new BadRequestObjectResult(new ErrorResponse(exception!.ErrorMessages));
-    }
-    else if (context.Exception is InvalidLoginException)
-    {
-      context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-      context.Result = new UnauthorizedObjectResult(new ErrorResponse(context.Exception.Message));
-    }
+    context.HttpContext.Response.StatusCode = (int)myRecipeBookException.GetStatusCode();
+    context.Result = new ObjectResult(new ErrorResponse(myRecipeBookException.GetErrorMessages()));
   }
 
-  private void ThrowUnknownException(ExceptionContext context)
+  private static void ThrowUnknownException(ExceptionContext context)
   {
-    context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+    context.HttpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
     context.Result = new ObjectResult(new ErrorResponse(ResourceMessagesException.UNKNOWN_ERROR));
   }
 }

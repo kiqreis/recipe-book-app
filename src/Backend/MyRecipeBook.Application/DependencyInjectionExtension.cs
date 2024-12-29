@@ -17,22 +17,31 @@ public static class DependencyInjectionExtension
 {
   public static void AddApplication(this IServiceCollection services, IConfiguration configuration)
   {
-    AddAutoMapper(services, configuration);
+    AddAutoMapper(services);
+    AddIdEncoder(services, configuration);
     AddUseCases(services);
   }
 
-  private static void AddAutoMapper(IServiceCollection services, IConfiguration configuration)
+  private static void AddAutoMapper(IServiceCollection services)
+  {
+    //services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+    services.AddScoped(options => new MapperConfiguration(opt =>
+    {
+      var sqids = options.GetService<SqidsEncoder<long>>()!;
+
+      opt.AddProfile(new MappingProfile(sqids));
+    }).CreateMapper());
+  }
+
+  private static void AddIdEncoder(IServiceCollection services, IConfiguration configuration)
   {
     var sqids = new SqidsEncoder<long>(new()
     {
       MinLength = 3,
       Alphabet = configuration.GetValue<string>("Settings:IdCryptographyAlphabet")!
     });
-    //services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-    services.AddScoped(options => new MapperConfiguration(opt =>
-    {
-      opt.AddProfile(new MappingProfile(sqids));
-    }).CreateMapper());
+
+    services.AddSingleton(sqids);
   }
 
   private static void AddUseCases(IServiceCollection services)

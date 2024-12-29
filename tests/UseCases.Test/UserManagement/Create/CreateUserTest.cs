@@ -36,7 +36,7 @@ public class CreateUserTest
     Func<Task> action = async () => await useCase.Execute(request);
 
     (await action.Should().ThrowAsync<RequestValidationException>())
-      .Where(e => e.ErrorMessages.Count == 1 && e.ErrorMessages.Contains(ResourceMessagesException.EMAIL_ALREADY_EXISTS));
+      .Where(e => e.GetErrorMessages().Count == 1 && e.GetErrorMessages().Contains(ResourceMessagesException.EMAIL_ALREADY_EXISTS));
   }
 
   private CreateUser CreateUser(string? email = null)

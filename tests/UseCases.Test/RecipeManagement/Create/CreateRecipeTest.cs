@@ -39,7 +39,7 @@ public class CreateRecipeTest
     Func<Task> action = async () => await useCase.Execute(request);
 
     (await action.Should().ThrowAsync<RequestValidationException>())
-      .Where(e => e.ErrorMessages.Count == 1 && e.ErrorMessages.Contains(ResourceMessagesException.RECIPE_TITLE_EMPTY));
+      .Where(e => e.GetErrorMessages().Count == 1 && e.GetErrorMessages().Contains(ResourceMessagesException.RECIPE_TITLE_EMPTY));
   }
 
   private static CreateRecipe CreateRecipe(User user)

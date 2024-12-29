@@ -41,5 +41,15 @@ public class MappingProfile : Profile
     CreateMap<Recipe, RecipeResponseShort>()
       .ForMember(dest => dest.Id, opt => opt.MapFrom(source => _encoder.Encode(source.Id)))
       .ForMember(dest => dest.AmountIngredients, opt => opt.MapFrom(source => source.Ingredients.Count));
+
+    CreateMap<Recipe, RecipeResponse>()
+      .ForMember(dest => dest.Id, opt => opt.MapFrom(source => _encoder.Encode(source.Id)))
+      .ForMember(dest => dest.DishTypes, opt => opt.MapFrom(source => source.DishTypes.Select(d => d.Type)));
+
+    CreateMap<Ingredient, IngredientResponse>()
+      .ForMember(dest => dest.Id, opt => opt.MapFrom(source => _encoder.Encode(source.Id)));
+
+    CreateMap<Instruction, InstructionResponse>()
+      .ForMember(dest => dest.Id, opt => opt.MapFrom(source => _encoder.Encode(source.Id)));
   }
 }
