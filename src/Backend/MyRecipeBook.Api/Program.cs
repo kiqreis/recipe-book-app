@@ -23,6 +23,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(opt =>
 {
+  opt.OperationFilter<IdFilter>();
+
   opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
   {
     Description = @"Jwt Authorization header using the Bearer scheme. Enter 'Bearer' [space] and then your token in text input below
