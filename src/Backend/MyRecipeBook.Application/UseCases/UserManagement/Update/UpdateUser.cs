@@ -31,7 +31,7 @@ public class UpdateUser(ILoggedUser _loggedUser, IUserRepository repository, IUn
     var validator = new UpdateUserValidator();
     var result = await validator.ValidateAsync(request);
 
-    if (currentEmail.Equals(request.Email) == false)
+    if (currentEmail.Equals(request.Email))
     {
       var userExists = await repository.IsActiveUserWithEmail(request.Email);
 

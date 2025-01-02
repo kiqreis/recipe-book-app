@@ -19,4 +19,14 @@ public class RecipeRepositoryBuilder
 
     return this;
   }
+
+  public RecipeRepositoryBuilder GetById(User user, Recipe? recipe)
+  {
+    if (recipe != null)
+    {
+      _repository.Setup(repository => repository.GetById(user, recipe.Id)).ReturnsAsync(recipe);
+    }
+
+    return this;
+  }
 }

@@ -18,14 +18,5 @@
       <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.0" />
       <PackageReference Include="Sqids" Version="3.1.0" />
     </ItemGroup>
-
-    <ItemGroup>
-        <EmbeddedResource Include="..\..\Shared\MyRecipeBook.Exceptions\ResourceMessagesException.resx">
-          <Generator></Generator>
-        </EmbeddedResource>
-        <EmbeddedResource Include="..\..\Shared\MyRecipeBook.Exceptions\ResourceMessagesException.fr-FR.resx" />
-        <EmbeddedResource Include="..\..\Shared\MyRecipeBook.Exceptions\ResourceMessagesException.pt-BR.resx" />
-        <EmbeddedResource Include="..\..\Shared\MyRecipeBook.Exceptions\ResourceMessagesException.es-ES.resx" />
-    </ItemGroup>
     
 </Project>

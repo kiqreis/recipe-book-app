@@ -11,18 +11,14 @@ public class IdBinder(SqidsEncoder<long> encoder) : IModelBinder
     var valueProviderResult = bindingContext.ValueProvider.GetValue(modelName);
 
     if (valueProviderResult == ValueProviderResult.None)
-    {
       return Task.CompletedTask;
-    }
 
     bindingContext.ModelState.SetModelValue(modelName, valueProviderResult);
 
     var value = valueProviderResult.FirstValue;
 
-    if (string.IsNullOrEmpty(value))
-    {
+    if (string.IsNullOrWhiteSpace(value))
       return Task.CompletedTask;
-    }
 
     var id = encoder.Decode(value).Single();
 
