@@ -47,4 +47,11 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
       .Include(recipe => recipe.DishTypes)
       .FirstOrDefaultAsync(recipe => recipe.IsActive && recipe.Id == recipeId && recipe.UserId == user.Id);
   }
+
+  public async Task Delete(long recipeId)
+  {
+    var recipe = await context.Recipes.FindAsync(recipeId);
+
+    context.Recipes.Remove(recipe!);
+  }
 }

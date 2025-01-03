@@ -5,13 +5,9 @@ using System.Net;
 
 namespace WebApi.Test.RecipeManagement.GetById;
 
-public class GetRecipeByIdInvalidToken : MyRecipeBookClassFixture
+public class GetRecipeByIdInvalidToken(CustomWebApplicationFactory factory) : MyRecipeBookClassFixture(factory)
 {
   private readonly string method = "recipe";
-
-  public GetRecipeByIdInvalidToken(CustomWebApplicationFactory factory) : base(factory)
-  {
-  }
 
   [Fact]
   public async Task Error_Invalid_Token()
@@ -27,7 +23,7 @@ public class GetRecipeByIdInvalidToken : MyRecipeBookClassFixture
   {
     var id = IdEncryptBuilder.Build().Encode(1);
     var token = JwtTokenGeneratorBuilder.Build().Generate(Guid.NewGuid());
-    var response = await Get($"{method}/{id}", token: token);
+    var response = await Get($"{method}/{id}", token);
 
     response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
   }
