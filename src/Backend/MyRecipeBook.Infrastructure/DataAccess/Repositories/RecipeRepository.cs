@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using MyRecipeBook.Domain.Dtos;
 using MyRecipeBook.Domain.Entities;
 using MyRecipeBook.Domain.Repositories.RecipeRepository;
@@ -41,10 +42,8 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
 
   public async Task<Recipe?> GetById(User user, long recipeId)
   {
-    return await context.Recipes.AsNoTracking()
-      .Include(recipe => recipe.Ingredients)
-      .Include(recipe => recipe.Instructions)
-      .Include(recipe => recipe.DishTypes)
+    return await GetFullRecipe()
+      .AsNoTracking()
       .FirstOrDefaultAsync(recipe => recipe.IsActive && recipe.Id == recipeId && recipe.UserId == user.Id);
   }
 
@@ -54,4 +53,21 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
 
     context.Recipes.Remove(recipe!);
   }
+
+  public async Task<Recipe?> GetByIdUpdate(User user, long recipeId)
+  {
+    return await GetFullRecipe()
+      .FirstOrDefaultAsync(recipe => recipe.IsActive && recipe.Id == recipeId && recipe.UserId == user.Id);
+  }
+
+  public void Update(Recipe recipe) => context.Recipes.Update(recipe);
+
+  private IIncludableQueryable<Recipe, IList<DishType>> GetFullRecipe()
+  {
+    return context.Recipes
+      .Include(recipe => recipe.Ingredients)
+      .Include(recipe => recipe.Instructions)
+      .Include(recipe => recipe.DishTypes);
+  }
+
 }

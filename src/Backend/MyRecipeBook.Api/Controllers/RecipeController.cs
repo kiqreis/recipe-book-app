@@ -4,6 +4,7 @@ using MyRecipeBook.Application.UseCases.RecipeManagement.Create;
 using MyRecipeBook.Application.UseCases.RecipeManagement.Delete;
 using MyRecipeBook.Application.UseCases.RecipeManagement.Filter;
 using MyRecipeBook.Application.UseCases.RecipeManagement.GetById;
+using MyRecipeBook.Application.UseCases.RecipeManagement.Update;
 using MyRecipeBook.Communication.Requests;
 using MyRecipeBook.Communication.Responses;
 
@@ -58,6 +59,21 @@ public class RecipeController : MyRecipeBookControllerBase
     [FromRoute][ModelBinder(typeof(IdBinder))] long id)
   {
     await deleteRecipe.Execute(id);
+
+    return NoContent();
+  }
+
+  [HttpPut]
+  [Route("{id}")]
+  [ProducesResponseType(StatusCodes.Status204NoContent)]
+  [ProducesResponseType<ErrorResponse>(StatusCodes.Status404NotFound)]
+  public async Task<IActionResult> Update(
+    [FromServices] IUpdateRecipe updateRecipe,
+    [FromRoute][ModelBinder(typeof(IdBinder))] long id,
+    [FromBody] RecipeRequest request
+    )
+  {
+    await updateRecipe.Execute(id, request);
 
     return NoContent();
   }
