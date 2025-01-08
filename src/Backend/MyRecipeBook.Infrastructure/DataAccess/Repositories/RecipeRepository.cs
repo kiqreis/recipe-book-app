@@ -60,6 +60,17 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
       .FirstOrDefaultAsync(recipe => recipe.IsActive && recipe.Id == recipeId && recipe.UserId == user.Id);
   }
 
+  public async Task<IList<Recipe>> GetForDashboard(User user)
+  {
+    return await context.Recipes
+      .AsNoTracking()
+      .Include(recipe => recipe.Ingredients)
+      .Where(recipe => recipe.IsActive && recipe.UserId == user.Id)
+      .OrderByDescending(recipe => recipe.CreatedAt)
+      .Take(5)
+      .ToListAsync();
+  }
+
   public void Update(Recipe recipe) => context.Recipes.Update(recipe);
 
   private IIncludableQueryable<Recipe, IList<DishType>> GetFullRecipe()

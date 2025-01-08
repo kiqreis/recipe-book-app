@@ -10,5 +10,6 @@ public interface IRecipeRepository
   Task<Recipe?> GetById(User user, long recipeId);
   Task<Recipe?> GetByIdUpdate(User user, long recipeId);
   Task Delete(long recipeId);
+  Task<IList<Recipe>> GetForDashboard(User user);
   void Update(Recipe recipe);
 }

@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MyRecipeBook.Application.Services.Mapping;
 using MyRecipeBook.Application.UseCases.RecipeManagement.Create;
+using MyRecipeBook.Application.UseCases.RecipeManagement.Dashboard;
 using MyRecipeBook.Application.UseCases.RecipeManagement.Delete;
 using MyRecipeBook.Application.UseCases.RecipeManagement.Filter;
 using MyRecipeBook.Application.UseCases.RecipeManagement.GetById;
@@ -59,5 +60,6 @@ public static class DependencyInjectionExtension
     services.AddScoped<IGetRecipeById, GetRecipeById>();
     services.AddScoped<IDeleteRecipe, DeleteRecipe>();
     services.AddScoped<IUpdateRecipe, UpdateRecipe>();
+    services.AddScoped<IGetDashboard, GetDashboard>();
   }
 }
