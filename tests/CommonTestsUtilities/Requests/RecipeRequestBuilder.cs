@@ -18,7 +18,7 @@ public class RecipeRequestBuilder
       .RuleFor(recipe => recipe.DishTypes, f => f.Make(3, () => f.PickRandom<DishType>()))
       .RuleFor(recipe => recipe.Instructions, f => f.Make(3, () => new InstructionRequest
       {
-        Text = f.Lorem.Paragraph(),
+        Text = f.Lorem.Text(),
         Step = step++
       }));
   }

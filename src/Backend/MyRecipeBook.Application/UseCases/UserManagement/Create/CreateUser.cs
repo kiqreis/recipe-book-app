@@ -39,7 +39,7 @@ public class CreateUser(IMapper mapper, IPasswordEncrypt encrypt, IUserRepositor
   private async Task Validate(CreateUserRequest request)
   {
     var validator = new CreateUserValidator();
-    var result = validator.Validate(request);
+    var result = await validator.ValidateAsync(request);
 
     var emailExists = await repository.IsActiveUserWithEmail(request.Email);
 

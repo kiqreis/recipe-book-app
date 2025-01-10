@@ -186,4 +186,13 @@
   <data name="RECIPE_NOT_FOUND" xml:space="preserve">
     <value>La recette est introuvable</value>
   </data>
+  <data name="INVALID_INGREDIENTS_NUMBER" xml:space="preserve">
+    <value>Nombre d'ingrédients invalide. La liste doit contenir entre 1 et 6 ingrédients</value>
+  </data>
+  <data name="DUPLICATED_INGREDIENTS_IN_LIST" xml:space="preserve">
+    <value>Les ingrédients dupliqués ne sont pas autorisés dans la liste</value>
+  </data>
+  <data name="INGREDIENT_NOT_FOLLOWING_PATTERN" xml:space="preserve">
+    <value>Format d'ingrédient invalide. Veuillez vous assurer que l'ingrédient suit notre modèle</value>
+  </data>
 </root>

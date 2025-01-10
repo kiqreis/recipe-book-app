@@ -88,6 +88,6 @@ public class FilterRecipeTest : MyRecipeBookClassFixture
 
     var expectedMessage = ResourceMessagesException.ResourceManager.GetString("COOKING_TIME_NOT_SUPPORTED", new CultureInfo(culture));
 
-    errors.Should().HaveCount(1).And.Contain(c => c.GetString()!.Equals(expectedMessage));
+    errors.Should().HaveCount(1).And.Contain(e => e.GetString()!.Equals(expectedMessage));
   }
 }

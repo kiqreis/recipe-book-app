@@ -24,7 +24,7 @@ public class CreateRecipe(IRecipeRepository repository, ILoggedUser _loggedUser,
 
     for (var i = 0; i < instructions.Count; i++)
     {
-      instructions.ElementAt(i).Step = i + 1;
+      instructions[i].Step = i + 1;
     }
 
     recipe.Instructions = mapper.Map<IList<Instruction>>(instructions);
