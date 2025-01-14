@@ -31,6 +31,7 @@ public static class DependencyInjectionExtension
     AddRepositories(services);
     AddLoggedUser(services);
     AddToken(services, configuration);
+    AddOpenAI(services, configuration);
 
     if (configuration.IsUnitTestEnvironment())
     {
