@@ -4,6 +4,7 @@ using MyRecipeBook.Api.Binders;
 using MyRecipeBook.Application.UseCases.RecipeManagement.Create;
 using MyRecipeBook.Application.UseCases.RecipeManagement.Delete;
 using MyRecipeBook.Application.UseCases.RecipeManagement.Filter;
+using MyRecipeBook.Application.UseCases.RecipeManagement.Generate;
 using MyRecipeBook.Application.UseCases.RecipeManagement.GetById;
 using MyRecipeBook.Application.UseCases.RecipeManagement.Update;
 using MyRecipeBook.Communication.Requests;
@@ -78,5 +79,15 @@ public class RecipeController : MyRecipeBookControllerBase
     await updateRecipe.Execute(id, request);
 
     return NoContent();
+  }
+
+  [HttpPost("generate")]
+  [ProducesResponseType<RecipeGeneratedResponse>(StatusCodes.Status201Created)]
+  [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
+  public async Task<IActionResult> Generate([FromServices] IRecipeGenerate recipeGenerate, RecipeGeneratedRequest request)
+  {
+    var response = await recipeGenerate.Execute(request);
+
+    return Ok(response);
   }
 }
