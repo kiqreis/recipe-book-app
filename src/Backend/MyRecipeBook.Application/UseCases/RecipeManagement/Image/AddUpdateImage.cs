@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FileTypeChecker.Extensions;
+using FileTypeChecker.Types;
+using Microsoft.AspNetCore.Http;
 using MyRecipeBook.Domain.Repositories;
 using MyRecipeBook.Domain.Repositories.RecipeRepository;
 using MyRecipeBook.Domain.Services.LoggedUser;
@@ -17,6 +19,13 @@ public class AddUpdateImage(ILoggedUser _loggedUser, IRecipeRepository repositor
     if (recipe == null)
     {
       throw new NotFoundException(ResourceMessagesException.RECIPE_NOT_FOUND);
+    }
+
+    var fileStream = file.OpenReadStream();
+
+    if (!fileStream.Is<PortableNetworkGraphic>() && !fileStream.Is<JointPhotographicExpertsGroup>())
+    {
+      throw new RequestValidationException([ResourceMessagesException.ONLY_IMAGES_ACCEPTED]);
     }
   }
 }
