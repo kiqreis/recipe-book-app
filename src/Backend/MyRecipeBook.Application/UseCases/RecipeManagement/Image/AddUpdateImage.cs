@@ -4,12 +4,13 @@ using Microsoft.AspNetCore.Http;
 using MyRecipeBook.Domain.Repositories;
 using MyRecipeBook.Domain.Repositories.RecipeRepository;
 using MyRecipeBook.Domain.Services.LoggedUser;
+using MyRecipeBook.Domain.Services.Storage;
 using MyRecipeBook.Exceptions;
 using MyRecipeBook.Exceptions.ExceptionBase;
 
 namespace MyRecipeBook.Application.UseCases.RecipeManagement.Image;
 
-public class AddUpdateImage(ILoggedUser _loggedUser, IRecipeRepository repository, IUnitOfWork unitOfWork) : IAddUpdateImage
+public class AddUpdateImage(ILoggedUser _loggedUser, IRecipeRepository repository, IUnitOfWork unitOfWork, IBlobStorageService blobStorageService) : IAddUpdateImage
 {
   public async Task Execute(long id, IFormFile file)
   {
@@ -27,5 +28,18 @@ public class AddUpdateImage(ILoggedUser _loggedUser, IRecipeRepository repositor
     {
       throw new RequestValidationException([ResourceMessagesException.ONLY_IMAGES_ACCEPTED]);
     }
+
+    if (string.IsNullOrWhiteSpace(recipe.ImageId))
+    {
+      recipe.ImageId = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+
+      repository.Update(recipe);
+
+      await unitOfWork.CommitAsync();
+    }
+
+    fileStream.Position = 0;
+
+    await blobStorageService.Upload(loggedUser, fileStream, recipe.ImageId);
   }
 }
