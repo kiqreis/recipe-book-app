@@ -1,17 +1,21 @@
 ﻿using AutoMapper;
+using FileTypeChecker.Extensions;
+using FileTypeChecker.Types;
 using MyRecipeBook.Communication.Requests;
 using MyRecipeBook.Communication.Responses;
 using MyRecipeBook.Domain.Entities;
 using MyRecipeBook.Domain.Repositories;
 using MyRecipeBook.Domain.Repositories.RecipeRepository;
 using MyRecipeBook.Domain.Services.LoggedUser;
+using MyRecipeBook.Domain.Services.Storage;
+using MyRecipeBook.Exceptions;
 using MyRecipeBook.Exceptions.ExceptionBase;
 
 namespace MyRecipeBook.Application.UseCases.RecipeManagement.Create;
 
-public class CreateRecipe(IRecipeRepository repository, ILoggedUser _loggedUser, IUnitOfWork unitOfWork, IMapper mapper) : ICreateRecipe
+public class CreateRecipe(IRecipeRepository repository, ILoggedUser _loggedUser, IUnitOfWork unitOfWork, IMapper mapper, IBlobStorageService blobStorageService) : ICreateRecipe
 {
-  public async Task<CreatedRecipeResponse> Execute(RecipeRequest request)
+  public async Task<CreatedRecipeResponse> Execute(CreateRecipeRequestFormData request)
   {
     Validate(request);
 
@@ -28,6 +32,22 @@ public class CreateRecipe(IRecipeRepository repository, ILoggedUser _loggedUser,
     }
 
     recipe.Instructions = mapper.Map<IList<Instruction>>(instructions);
+
+    if (request.Image != null)
+    {
+      recipe.ImageId = $"{Guid.NewGuid()}{Path.GetExtension(request.Image.FileName)}";
+
+      var fileStream = request.Image.OpenReadStream();
+      
+      if (!fileStream.Is<PortableNetworkGraphic>() && !fileStream.Is<JointPhotographicExpertsGroup>())
+      {
+        throw new RequestValidationException([ResourceMessagesException.ONLY_IMAGES_ACCEPTED]);
+      }
+
+      fileStream.Position = 0;
+
+      await blobStorageService.Upload(loggedUser, fileStream, recipe.ImageId);
+    }
 
     await repository.Add(recipe);
     await unitOfWork.CommitAsync();

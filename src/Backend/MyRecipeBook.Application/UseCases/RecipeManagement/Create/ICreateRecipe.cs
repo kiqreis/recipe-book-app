@@ -5,5 +5,5 @@ namespace MyRecipeBook.Application.UseCases.RecipeManagement.Create;
 
 public interface ICreateRecipe
 {
-  public Task<CreatedRecipeResponse> Execute(RecipeRequest request);
+  public Task<CreatedRecipeResponse> Execute(CreateRecipeRequestFormData request);
 }
