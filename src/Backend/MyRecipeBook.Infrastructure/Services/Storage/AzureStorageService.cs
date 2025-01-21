@@ -51,4 +51,15 @@ public class AzureStorageService(BlobServiceClient blobServiceClient) : IBlobSto
 
     return string.Empty;
   }
+
+  public async Task Delete(User user, string fileName)
+  {
+    var containerClient = blobServiceClient.GetBlobContainerClient(user.UserId.ToString());
+    var exist = await containerClient.ExistsAsync();
+
+    if (exist.Value)
+    {
+      await containerClient.DeleteBlobIfExistsAsync(fileName);
+    }
+  }
 }
