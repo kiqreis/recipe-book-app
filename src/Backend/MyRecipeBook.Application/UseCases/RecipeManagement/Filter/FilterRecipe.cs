@@ -1,15 +1,17 @@
 ﻿using AutoMapper;
+using MyRecipeBook.Application.Extensions;
 using MyRecipeBook.Communication.Requests;
 using MyRecipeBook.Communication.Responses;
 using MyRecipeBook.Domain.Dtos;
 using MyRecipeBook.Domain.Enums;
 using MyRecipeBook.Domain.Repositories.RecipeRepository;
 using MyRecipeBook.Domain.Services.LoggedUser;
+using MyRecipeBook.Domain.Services.Storage;
 using MyRecipeBook.Exceptions.ExceptionBase;
 
 namespace MyRecipeBook.Application.UseCases.RecipeManagement.Filter;
 
-public class FilterRecipe(IMapper mapper, ILoggedUser _loggedUser, IRecipeRepository repository) : IFilterRecipe
+public class FilterRecipe(IMapper mapper, ILoggedUser _loggedUser, IRecipeRepository repository, IBlobStorageService blobStorageService) : IFilterRecipe
 {
   public async Task<RecipesResponse> Execute(RecipeFilterRequest request)
   {
@@ -29,7 +31,7 @@ public class FilterRecipe(IMapper mapper, ILoggedUser _loggedUser, IRecipeReposi
 
     return new RecipesResponse
     {
-      Recipes = mapper.Map<List<RecipeResponseShort>>(recipes)
+      Recipes = await recipes.MapToShortRecipe(loggedUser, blobStorageService, mapper)
     };
   }
 

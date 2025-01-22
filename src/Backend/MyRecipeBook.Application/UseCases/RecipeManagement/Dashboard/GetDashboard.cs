@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
+using MyRecipeBook.Application.Extensions;
 using MyRecipeBook.Communication.Responses;
 using MyRecipeBook.Domain.Repositories.RecipeRepository;
 using MyRecipeBook.Domain.Services.LoggedUser;
+using MyRecipeBook.Domain.Services.Storage;
 
 namespace MyRecipeBook.Application.UseCases.RecipeManagement.Dashboard;
 
-public class GetDashboard(IRecipeRepository repository, IMapper mapper, ILoggedUser _loggedUser) : IGetDashboard
+public class GetDashboard(IRecipeRepository repository, IMapper mapper, ILoggedUser _loggedUser, IBlobStorageService blobStorageService) : IGetDashboard
 {
   public async Task<RecipesResponse> Execute()
   {
@@ -14,7 +16,7 @@ public class GetDashboard(IRecipeRepository repository, IMapper mapper, ILoggedU
 
     return new RecipesResponse
     {
-      Recipes = mapper.Map<IList<RecipeResponseShort>>(recipes)
+      Recipes = await recipes.MapToShortRecipe(loggedUser, blobStorageService, mapper)
     };
   }
 }
