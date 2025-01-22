@@ -1,4 +1,5 @@
-﻿using CommonTestsUtilities.Entities;
+﻿using CommonTestsUtilities.BlobStorage;
+using CommonTestsUtilities.Entities;
 using CommonTestsUtilities.LoggedUser;
 using CommonTestsUtilities.Repositories;
 using FluentAssertions;
@@ -40,7 +41,8 @@ public class DeleteRecipeTest
     var loggedUser = LoggedUserBuilder.Build(user);
     var repository = new RecipeRepositoryBuilder().GetById(user, recipe).Build();
     var unitOfWork = UnityOfWorkBuilder.Build();
+    var blobStorage = new BlobStorageServiceBuilder().GetImageUrl(user, recipe?.ImageId).Build();
 
-    return new DeleteRecipe(loggedUser, repository, unitOfWork);
+    return new DeleteRecipe(loggedUser, repository, unitOfWork, blobStorage);
   }
 }
