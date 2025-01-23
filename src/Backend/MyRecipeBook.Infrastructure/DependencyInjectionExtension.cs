@@ -1,3 +1,4 @@
+using Azure.Messaging.ServiceBus;
 using Azure.Storage.Blobs;
 using FluentMigrator.Runner;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ using MyRecipeBook.Domain.Repositories.RecipeRepository;
 using MyRecipeBook.Domain.Repositories.UserRepository;
 using MyRecipeBook.Domain.Security.Encryption;
 using MyRecipeBook.Domain.Security.Token;
+using MyRecipeBook.Domain.ServiceBus;
 using MyRecipeBook.Domain.Services.LoggedUser;
 using MyRecipeBook.Domain.Services.OpenAI;
 using MyRecipeBook.Domain.Services.Storage;
@@ -20,6 +22,7 @@ using MyRecipeBook.Infrastructure.Security.Token.Access.Generator;
 using MyRecipeBook.Infrastructure.Security.Token.Access.Validator;
 using MyRecipeBook.Infrastructure.Services.LoggedUser;
 using MyRecipeBook.Infrastructure.Services.OpenAI;
+using MyRecipeBook.Infrastructure.Services.ServiceBus;
 using MyRecipeBook.Infrastructure.Services.Storage;
 using OpenAI.Chat;
 using System.Reflection;
@@ -36,6 +39,7 @@ public static class DependencyInjectionExtension
     AddToken(services, configuration);
     AddOpenAI(services, configuration);
     AddAzureStorage(services, configuration);
+    AddQueue(services, configuration);
 
     if (configuration.IsUnitTestEnvironment())
     {
@@ -108,5 +112,24 @@ public static class DependencyInjectionExtension
     {
       services.AddScoped<IBlobStorageService>(_ => new AzureStorageService(new BlobServiceClient(connectionString)));
     }
+  }
+
+  private static void AddQueue(IServiceCollection services, IConfiguration configuration)
+  {
+    var connectionString = configuration.GetValue<string>("Settings:ServiceBus:DeleteUserAccount");
+
+    var client = new ServiceBusClient(connectionString, new ServiceBusClientOptions
+    {
+      TransportType = ServiceBusTransportType.AmqpWebSockets
+    });
+
+    var deleteQueue = new DeleteUserQueue(client.CreateSender("user"));
+    var deleteUserProcessor = new DeleteUserProcessor(client.CreateProcessor("user", new ServiceBusProcessorOptions
+    {
+      MaxConcurrentCalls = 1
+    }));
+
+    services.AddSingleton(deleteUserProcessor);
+    services.AddScoped<IDeleteUserQueue>(_ => deleteQueue);
   }
 }
