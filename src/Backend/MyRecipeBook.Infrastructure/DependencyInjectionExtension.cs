@@ -104,6 +104,9 @@ public static class DependencyInjectionExtension
   {
     var connectionString = configuration.GetValue<string>("Settings:BlobStorage:Azure");
 
-    services.AddScoped<IBlobStorageService>(_ => new AzureStorageService(new BlobServiceClient(connectionString)));
+    if (string.IsNullOrWhiteSpace(connectionString))
+    {
+      services.AddScoped<IBlobStorageService>(_ => new AzureStorageService(new BlobServiceClient(connectionString)));
+    }
   }
 }

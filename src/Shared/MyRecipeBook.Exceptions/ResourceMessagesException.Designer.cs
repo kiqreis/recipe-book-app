@@ -268,7 +268,7 @@ namespace MyRecipeBook.Exceptions {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a The recipe title has been left blank. Please provide a valid title.
+        ///   Consulta uma cadeia de caracteres localizada semelhante a The recipe title has been left blank. Please provide a valid title..
         /// </summary>
         public static string RECIPE_TITLE_EMPTY {
             get {
@@ -277,7 +277,7 @@ namespace MyRecipeBook.Exceptions {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a When adding instructions, please ensure that each one has a unique step number. Two or more instructions cannot have the same step.
+        ///   Consulta uma cadeia de caracteres localizada semelhante a When adding instructions, please ensure that each one has a unique step number. Two or more instructions cannot have the same step..
         /// </summary>
         public static string TWO_OR_MORE_INSTRUCTIONS_SAME_ORDER {
             get {

@@ -1,4 +1,5 @@
-﻿using CommonTestsUtilities.Entities;
+﻿using CommonTestsUtilities.BlobStorage;
+using CommonTestsUtilities.Entities;
 using CommonTestsUtilities.IdEncrypt;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -29,6 +30,10 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
         }
 
         var provider = service.AddEntityFrameworkInMemoryDatabase().BuildServiceProvider();
+
+        var blobStorage = new BlobStorageServiceBuilder().Build();
+
+        service.AddScoped(_ => blobStorage);
 
         service.AddDbContext<AppDbContext>(opt =>
         {
