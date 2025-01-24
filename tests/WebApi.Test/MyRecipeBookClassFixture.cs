@@ -11,6 +11,8 @@ public class MyRecipeBookClassFixture(CustomWebApplicationFactory factory) : ICl
   protected async Task<HttpResponseMessage> Post(string method, object request, string token = "", string culture = "en")
   {
     ChangeRequestCulture(culture);
+    AuthorizeRequest(token);
+
     return await _httpClient.PostAsJsonAsync(method, request);
   }
 
@@ -96,10 +98,12 @@ public class MyRecipeBookClassFixture(CustomWebApplicationFactory factory) : ICl
     {
       AddClassListToMultpartContent(multipartContent, propName, list);
     }
-
-    foreach (var item in list)
+    else
     {
-      multipartContent.Add(new StringContent(item.ToString()!), propName);
+      foreach (var item in list)
+      {
+        multipartContent.Add(new StringContent(item.ToString()!), propName);
+      }
     }
   }
 

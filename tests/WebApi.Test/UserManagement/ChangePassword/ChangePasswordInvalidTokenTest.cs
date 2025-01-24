@@ -13,7 +13,7 @@ public class ChangePasswordInvalidTokenTest(CustomWebApplicationFactory factory)
   public async Task Error_Token_Invalid()
   {
     var request = new ChangePasswordRequest();
-    var response = await Put(method, request, token: "invalidToken");
+    var response = await Put(method: method, request: request, token: "invalidToken");
 
     response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
   }
@@ -22,7 +22,7 @@ public class ChangePasswordInvalidTokenTest(CustomWebApplicationFactory factory)
   public async Task Error_Without_Token()
   {
     var request = new ChangePasswordRequest();
-    var response = await Put(method, request, token: string.Empty);
+    var response = await Put(method: method, request: request, token: string.Empty);
 
     response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
   }
@@ -32,7 +32,7 @@ public class ChangePasswordInvalidTokenTest(CustomWebApplicationFactory factory)
   {
     var token = JwtTokenGeneratorBuilder.Build().Generate(Guid.NewGuid());
     var request = new ChangePasswordRequest();
-    var response = await Put(method, request, token);
+    var response = await Put(method: method, request: request, token: token);
 
     response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
   }

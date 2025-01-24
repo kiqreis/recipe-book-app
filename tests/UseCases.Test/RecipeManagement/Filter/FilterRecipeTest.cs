@@ -93,9 +93,9 @@ public class FilterRecipeTest
   {
     var mapper = MapperBuilder.Build();
     var loggedUser = LoggedUserBuilder.Build(user);
-    var repository = new RecipeRepositoryBuilder().Filter(user, recipes).Build();
+    var recipeReadOnlyRepository = new RecipeReadOnlyRepositoryBuilder().Filter(user, recipes).Build();
     var blobStorage = new BlobStorageServiceBuilder().GetImageUrl(user, recipes).Build();
 
-    return new FilterRecipe(mapper, loggedUser, repository, blobStorage);
+    return new FilterRecipe(mapper, loggedUser, recipeReadOnlyRepository, blobStorage);
   }
 }

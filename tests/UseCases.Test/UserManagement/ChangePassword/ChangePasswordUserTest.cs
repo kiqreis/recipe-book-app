@@ -75,10 +75,10 @@ public class ChangePasswordUserTest
   private static ChangePassword ChangePassword(User user)
   {
     var unitOfWork = UnityOfWorkBuilder.Build();
-    var repository = new UserRepositoryBuilder().GetById(user).Build();
+    var userUpdateOnlyRepository = new UserUpdateOnlyRepositoryBuilder().GetById(user).Build();
     var loggedUser = LoggedUserBuilder.Build(user);
     var passwordEncrypt = PasswordEncryptBuilder.Build();
 
-    return new ChangePassword(loggedUser, passwordEncrypt, repository, unitOfWork);
+    return new ChangePassword(loggedUser, passwordEncrypt, userUpdateOnlyRepository, unitOfWork);
   }
 }

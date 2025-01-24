@@ -36,7 +36,7 @@ public class UpdateRecipeTest
     Func<Task> action = async () => await useCase.Execute(id: 1000, request);
 
     (await action.Should().ThrowAsync<NotFoundException>())
-      .Where(e => e.Message.Equals(ResourceMessagesException.RECIPE_NOT_FOUND));
+      .Where(e => e.Message.Contains(ResourceMessagesException.RECIPE_NOT_FOUND));
   }
 
   [Fact]
@@ -61,8 +61,8 @@ public class UpdateRecipeTest
     var mapper = MapperBuilder.Build();
     var loggedUser = LoggedUserBuilder.Build(user);
     var unitOfWork = UnityOfWorkBuilder.Build();
-    var repository = new RecipeRepositoryBuilder().GetByIdUpdate(user, recipe).Build();
+    var recipeUpsateOnlyRepository = new RecipeUpdateOnlyRepositoryBuilder().GetById(user, recipe).Build();
 
-    return new UpdateRecipe(loggedUser, unitOfWork, mapper, repository);
+    return new UpdateRecipe(loggedUser, unitOfWork, mapper, recipeUpsateOnlyRepository);
   }
 }

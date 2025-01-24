@@ -39,10 +39,11 @@ public class DeleteRecipeTest
   public static DeleteRecipe DeleteRecipe(User user, Recipe? recipe = null)
   {
     var loggedUser = LoggedUserBuilder.Build(user);
-    var repository = new RecipeRepositoryBuilder().GetById(user, recipe).Build();
+    var recipeReadOnlyRepository = new RecipeReadOnlyRepositoryBuilder().GetById(user, recipe).Build();
+    var recipeWriteOnlyRepository = RecipeWriteOnlyRepositoryBuilder.Build();
     var unitOfWork = UnityOfWorkBuilder.Build();
     var blobStorage = new BlobStorageServiceBuilder().GetImageUrl(user, recipe?.ImageId).Build();
 
-    return new DeleteRecipe(loggedUser, repository, unitOfWork, blobStorage);
+    return new DeleteRecipe(loggedUser, recipeReadOnlyRepository, recipeWriteOnlyRepository, unitOfWork, blobStorage);
   }
 }

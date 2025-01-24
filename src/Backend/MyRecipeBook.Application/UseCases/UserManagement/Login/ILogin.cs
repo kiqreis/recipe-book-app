@@ -5,5 +5,5 @@ namespace MyRecipeBook.Application.UseCases.UserManagement.Login;
 
 public interface ILogin
 {
-  public Task<CreateUserResponse> Execute(RequestLogin request);
+  Task<CreateUserResponse> Execute(RequestLogin request);
 }

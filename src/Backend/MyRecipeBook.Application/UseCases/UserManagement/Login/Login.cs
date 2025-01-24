@@ -7,12 +7,12 @@ using MyRecipeBook.Exceptions.ExceptionBase;
 
 namespace MyRecipeBook.Application.UseCases.UserManagement.Login;
 
-public class Login(IUserRepository repository, IPasswordEncrypt encrypt, IAccessTokenGenerator accessToken) : ILogin
+public class Login(IUserReadOnlyRepository userReadOnlyRepository, IPasswordEncrypt encrypt, IAccessTokenGenerator accessToken) : ILogin
 {
   public async Task<CreateUserResponse> Execute(RequestLogin request)
   {
     var passwordEncrypt = encrypt.Encrypt(request.Password);
-    var user = await repository.GetByEmailAndPassword(request.Email, passwordEncrypt) ?? throw new InvalidLoginException();
+    var user = await userReadOnlyRepository.GetByEmailAndPassword(request.Email, passwordEncrypt) ?? throw new InvalidLoginException();
 
     return new CreateUserResponse
     {

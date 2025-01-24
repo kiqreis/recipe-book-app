@@ -1,9 +1,8 @@
-﻿
-namespace MyRecipeBook.Application.UseCases.UserManagement.Delete.DeleteAccount;
+﻿namespace MyRecipeBook.Application.UseCases.UserManagement.Delete.DeleteAccount;
 
 public class DeleteUserAccount : IDeleteAccountUser
 {
-  public Task Execute(Guid userId)
+  public async Task Execute(Guid userId)
   {
     throw new NotImplementedException();
   }

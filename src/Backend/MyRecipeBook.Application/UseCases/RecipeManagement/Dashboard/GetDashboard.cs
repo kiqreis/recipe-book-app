@@ -7,12 +7,12 @@ using MyRecipeBook.Domain.Services.Storage;
 
 namespace MyRecipeBook.Application.UseCases.RecipeManagement.Dashboard;
 
-public class GetDashboard(IRecipeRepository repository, IMapper mapper, ILoggedUser _loggedUser, IBlobStorageService blobStorageService) : IGetDashboard
+public class GetDashboard(IRecipeReadOnlyRepository recipeReadOnlyRepository, IMapper mapper, ILoggedUser _loggedUser, IBlobStorageService blobStorageService) : IGetDashboard
 {
   public async Task<RecipesResponse> Execute()
   {
     var loggedUser = await _loggedUser.User();
-    var recipes = await repository.GetForDashboard(loggedUser);
+    var recipes = await recipeReadOnlyRepository.GetForDashboard(loggedUser);
 
     return new RecipesResponse
     {

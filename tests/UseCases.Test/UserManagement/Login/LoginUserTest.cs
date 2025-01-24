@@ -45,14 +45,14 @@ public class LoginUserTest
   private static Login LoginUser(User? user = null)
   {
     var passwordEncrypt = PasswordEncryptBuilder.Build();
-    var repository = new UserRepositoryBuilder();
+    var userReadOnlyRepository = new UserReadOnlyRepositoryBuilder();
     var accessToken = JwtTokenGeneratorBuilder.Build();
 
     if (user != null)
     {
-      repository.GetByEmailAndPassword(user);
+      userReadOnlyRepository.GetByEmailAndPassword(user);
     }
 
-    return new Login(repository.Build(), passwordEncrypt, accessToken);
+    return new Login(userReadOnlyRepository.Build(), passwordEncrypt, accessToken);
   }
 }

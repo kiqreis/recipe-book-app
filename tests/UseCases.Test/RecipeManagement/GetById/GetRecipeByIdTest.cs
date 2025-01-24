@@ -43,9 +43,9 @@ public class GetRecipeByIdTest
   {
     var mapper = MapperBuilder.Build();
     var loggedUser = LoggedUserBuilder.Build(user);
-    var repository = new RecipeRepositoryBuilder().GetById(user, recipe).Build();
+    var recipeReadOnlyRepository = new RecipeReadOnlyRepositoryBuilder().GetById(user, recipe).Build();
     var blobStorage = new BlobStorageServiceBuilder().GetImageUrl(user, recipe?.ImageId).Build();
 
-    return new GetRecipeById(mapper, loggedUser, repository, blobStorage);
+    return new GetRecipeById(mapper, loggedUser, recipeReadOnlyRepository, blobStorage);
   }
 }

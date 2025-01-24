@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using MyRecipeBook.Communication.Requests;
+using MyRecipeBook.Domain.Entities;
+using MyRecipeBook.Domain.Extensions;
 using MyRecipeBook.Domain.Repositories;
 using MyRecipeBook.Domain.Repositories.RecipeRepository;
 using MyRecipeBook.Domain.Services.LoggedUser;
@@ -8,14 +10,14 @@ using MyRecipeBook.Exceptions.ExceptionBase;
 
 namespace MyRecipeBook.Application.UseCases.RecipeManagement.Update;
 
-public class UpdateRecipe(ILoggedUser _loggedUser, IUnitOfWork unitOfWork, IMapper mapper, IRecipeRepository repository) : IUpdateRecipe
+public class UpdateRecipe(ILoggedUser _loggedUser, IUnitOfWork unitOfWork, IMapper mapper, IRecipeUpdateOnlyRepository recipeUpdateOnlyRepository) : IUpdateRecipe
 {
   public async Task Execute(long id, RecipeRequest request)
   {
     Validate(request);
 
     var loggedUser = await _loggedUser.User();
-    var recipe = await repository.GetByIdUpdate(loggedUser, id);
+    var recipe = await recipeUpdateOnlyRepository.GetById(loggedUser, id);
 
     if (recipe == null)
     {
@@ -35,7 +37,9 @@ public class UpdateRecipe(ILoggedUser _loggedUser, IUnitOfWork unitOfWork, IMapp
       instructions[i].Step = i + 1;
     }
 
-    repository.Update(recipe);
+    recipe.Instructions = mapper.Map<IList<Instruction>>(instructions);
+
+    recipeUpdateOnlyRepository.Update(recipe);
 
     await unitOfWork.CommitAsync();
   }
@@ -44,7 +48,7 @@ public class UpdateRecipe(ILoggedUser _loggedUser, IUnitOfWork unitOfWork, IMapp
   {
     var result = new RecipeValidator().Validate(request);
 
-    if (result.IsValid == false)
+    if (result.IsValid.IsFalse())
     {
       throw new RequestValidationException(result.Errors.Select(e => e.ErrorMessage).Distinct().ToList());
     }

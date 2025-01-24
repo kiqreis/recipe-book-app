@@ -37,9 +37,9 @@ public class GetDashboardTest
   {
     var mapper = MapperBuilder.Build();
     var loggedUser = LoggedUserBuilder.Build(user);
-    var repository = new RecipeRepositoryBuilder().GetForDashboard(user, recipes).Build();
+    var recipeReadOnlyRepository = new RecipeReadOnlyRepositoryBuilder().GetForDashboard(user, recipes).Build();
     var blobStorage = new BlobStorageServiceBuilder().GetImageUrl(user, recipes).Build();
 
-    return new GetDashboard(repository, mapper, loggedUser, blobStorage);
+    return new GetDashboard(recipeReadOnlyRepository, mapper, loggedUser, blobStorage);
   }
 }

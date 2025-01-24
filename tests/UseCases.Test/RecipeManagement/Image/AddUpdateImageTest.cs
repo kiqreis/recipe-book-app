@@ -52,8 +52,8 @@ public class AddUpdateImageTest
     var useCase = AddUpdateImage(user);
     var action = async () => await useCase.Execute(1, file);
 
-    (await action.Should().ThrowAsync<RequestValidationException>())
-      .Where(e => e.GetErrorMessages().Equals(ResourceMessagesException.RECIPE_NOT_FOUND));
+    (await action.Should().ThrowAsync<NotFoundException>())
+      .Where(e => e.GetErrorMessages().Contains(ResourceMessagesException.RECIPE_NOT_FOUND));
   }
 
   [Fact]
@@ -72,10 +72,10 @@ public class AddUpdateImageTest
   private static AddUpdateImage AddUpdateImage(User user, Recipe? recipe = null)
   {
     var loggedUser = LoggedUserBuilder.Build(user);
-    var repository = new RecipeRepositoryBuilder().GetById(user, recipe).Build();
+    var recipeUpdateOnlyRepository = new RecipeUpdateOnlyRepositoryBuilder().GetById(user, recipe).Build();
     var unitOfWork = UnityOfWorkBuilder.Build();
     var blobStorage = new BlobStorageServiceBuilder().Build();
 
-    return new AddUpdateImage(loggedUser, repository, unitOfWork, blobStorage);
+    return new AddUpdateImage(loggedUser, recipeUpdateOnlyRepository, unitOfWork, blobStorage);
   }
 }

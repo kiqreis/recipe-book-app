@@ -1,5 +1,6 @@
 ﻿using FluentValidation.Results;
 using MyRecipeBook.Communication.Requests;
+using MyRecipeBook.Domain.Extensions;
 using MyRecipeBook.Domain.Repositories;
 using MyRecipeBook.Domain.Repositories.UserRepository;
 using MyRecipeBook.Domain.Services.LoggedUser;
@@ -8,7 +9,7 @@ using MyRecipeBook.Exceptions.ExceptionBase;
 
 namespace MyRecipeBook.Application.UseCases.UserManagement.Update;
 
-public class UpdateUser(ILoggedUser _loggedUser, IUserRepository repository, IUnitOfWork unitOfWork) : IUpdateUser
+public class UpdateUser(ILoggedUser _loggedUser, IUserUpdateOnlyRepository userUpdateOnlyRepository, IUserReadOnlyRepository userReadOnlyRepository, IUnitOfWork unitOfWork) : IUpdateUser
 {
   public async Task Execute(UpdateUserRequest request)
   {
@@ -16,12 +17,12 @@ public class UpdateUser(ILoggedUser _loggedUser, IUserRepository repository, IUn
 
     await Validate(request, loggedUser.Email);
 
-    var user = await repository.GetById(loggedUser.Id);
+    var user = await userUpdateOnlyRepository.GetById(loggedUser.Id);
 
     user.Name = request.Name;
     user.Email = request.Email;
 
-    repository.Update(user);
+    userUpdateOnlyRepository.Update(user);
 
     await unitOfWork.CommitAsync();
   }
@@ -31,9 +32,9 @@ public class UpdateUser(ILoggedUser _loggedUser, IUserRepository repository, IUn
     var validator = new UpdateUserValidator();
     var result = await validator.ValidateAsync(request);
 
-    if (currentEmail.Equals(request.Email))
+    if (currentEmail.Equals(request.Email).IsFalse())
     {
-      var userExists = await repository.IsActiveUserWithEmail(request.Email);
+      var userExists = await userReadOnlyRepository.IsActiveUserWithEmail(request.Email);
 
       if (userExists)
       {
@@ -41,7 +42,7 @@ public class UpdateUser(ILoggedUser _loggedUser, IUserRepository repository, IUn
       }
     }
 
-    if (result.IsValid == false)
+    if (result.IsValid.IsFalse())
     {
       var errorMessages = result.Errors.Select(error => error.ErrorMessage).ToList();
 

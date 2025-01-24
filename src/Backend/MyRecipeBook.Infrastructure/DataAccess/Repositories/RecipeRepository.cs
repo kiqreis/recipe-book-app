@@ -6,7 +6,7 @@ using MyRecipeBook.Domain.Repositories.RecipeRepository;
 
 namespace MyRecipeBook.Infrastructure.DataAccess.Repositories;
 
-public class RecipeRepository(AppDbContext context) : IRecipeRepository
+public class RecipeRepository(AppDbContext context) : IRecipeWriteOnlyRepository, IRecipeReadOnlyRepository, IRecipeUpdateOnlyRepository
 {
   public async Task Add(Recipe recipe) => await context.Recipes.AddAsync(recipe);
 
@@ -40,10 +40,16 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
     return await query.ToListAsync();
   }
 
-  public async Task<Recipe?> GetById(User user, long recipeId)
+  async Task<Recipe?> IRecipeReadOnlyRepository.GetById(User user, long recipeId)
   {
     return await GetFullRecipe()
       .AsNoTracking()
+      .FirstOrDefaultAsync(recipe => recipe.IsActive && recipe.Id == recipeId && recipe.UserId == user.Id);
+  }
+
+  async Task<Recipe?> IRecipeUpdateOnlyRepository.GetById(User user, long recipeId)
+  {
+    return await GetFullRecipe()
       .FirstOrDefaultAsync(recipe => recipe.IsActive && recipe.Id == recipeId && recipe.UserId == user.Id);
   }
 
@@ -54,11 +60,7 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
     context.Recipes.Remove(recipe!);
   }
 
-  public async Task<Recipe?> GetByIdUpdate(User user, long recipeId)
-  {
-    return await GetFullRecipe()
-      .FirstOrDefaultAsync(recipe => recipe.IsActive && recipe.Id == recipeId && recipe.UserId == user.Id);
-  }
+  public void Update(Recipe recipe) => context.Recipes.Update(recipe);
 
   public async Task<IList<Recipe>> GetForDashboard(User user)
   {
@@ -71,8 +73,6 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
       .ToListAsync();
   }
 
-  public void Update(Recipe recipe) => context.Recipes.Update(recipe);
-
   private IIncludableQueryable<Recipe, IList<DishType>> GetFullRecipe()
   {
     return context.Recipes
@@ -80,5 +80,4 @@ public class RecipeRepository(AppDbContext context) : IRecipeRepository
       .Include(recipe => recipe.Instructions)
       .Include(recipe => recipe.DishTypes);
   }
-
 }

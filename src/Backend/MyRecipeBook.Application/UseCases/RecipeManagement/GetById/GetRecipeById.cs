@@ -8,12 +8,12 @@ using MyRecipeBook.Exceptions.ExceptionBase;
 
 namespace MyRecipeBook.Application.UseCases.RecipeManagement.GetById;
 
-public class GetRecipeById(IMapper mapper, ILoggedUser _loggedUser, IRecipeRepository repository, IBlobStorageService blobStorageService) : IGetRecipeById
+public class GetRecipeById(IMapper mapper, ILoggedUser _loggedUser, IRecipeReadOnlyRepository recipeReadOnlyRepository, IBlobStorageService blobStorageService) : IGetRecipeById
 {
   public async Task<RecipeResponse> Execute(long id)
   {
     var loggedUser = await _loggedUser.User();
-    var recipe = await repository.GetById(loggedUser, id);
+    var recipe = await recipeReadOnlyRepository.GetById(loggedUser, id);
 
     if (recipe == null)
     {

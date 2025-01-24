@@ -1,5 +1,6 @@
 ﻿using MyRecipeBook.Communication.Requests;
 using MyRecipeBook.Communication.Responses;
+using MyRecipeBook.Domain.Extensions;
 using MyRecipeBook.Domain.Services.OpenAI;
 using MyRecipeBook.Exceptions.ExceptionBase;
 
@@ -31,7 +32,7 @@ public class RecipeGenerate(IRecipeGenerateAI generateAI) : IRecipeGenerate
   {
     var result = new RecipeGenerateValidator().Validate(request);
 
-    if (result.IsValid == false)
+    if (result.IsValid.IsFalse())
     {
       throw new RequestValidationException(result.Errors.Select(e => e.ErrorMessage).ToList());
     }

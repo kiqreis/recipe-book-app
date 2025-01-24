@@ -63,8 +63,13 @@ public static class DependencyInjectionExtension
   private static void AddRepositories(IServiceCollection services)
   {
     services.AddScoped<IUnitOfWork, UnitOfWork>();
-    services.AddScoped<IUserRepository, UserRepository>();
-    services.AddScoped<IRecipeRepository, RecipeRepository>();
+    services.AddScoped<IUserWriteOnlyRepository, UserRepository>();
+    services.AddScoped<IUserReadOnlyRepository, UserRepository>();
+    services.AddScoped<IUserUpdateOnlyRepository, UserRepository>();
+    services.AddScoped<IUserDeleteOnlyRepository, UserRepository>();
+    services.AddScoped<IRecipeWriteOnlyRepository, RecipeRepository>();
+    services.AddScoped<IRecipeReadOnlyRepository, RecipeRepository>();
+    services.AddScoped<IRecipeUpdateOnlyRepository, RecipeRepository>();
   }
 
   private static void AddFluentMigrator(IServiceCollection services, IConfiguration configuration)
@@ -106,7 +111,7 @@ public static class DependencyInjectionExtension
 
   private static void AddAzureStorage(IServiceCollection services, IConfiguration configuration)
   {
-    var connectionString = configuration.GetValue<string>("Settings:BlobStorage:Azure");
+    var connectionString = configuration.GetValue<string>("Settings:BlobStorage:Azure")!;
 
     if (string.IsNullOrWhiteSpace(connectionString))
     {
@@ -117,6 +122,11 @@ public static class DependencyInjectionExtension
   private static void AddQueue(IServiceCollection services, IConfiguration configuration)
   {
     var connectionString = configuration.GetValue<string>("Settings:ServiceBus:DeleteUserAccount");
+
+    if (string.IsNullOrWhiteSpace(connectionString))
+    {
+      return;
+    }
 
     var client = new ServiceBusClient(connectionString, new ServiceBusClientOptions
     {

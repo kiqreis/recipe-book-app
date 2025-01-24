@@ -34,7 +34,7 @@ public class RecipeRepositoryBuilder
   {
     if (recipe != null)
     {
-      _repository.Setup(repository => repository.GetById(user, recipe.Id)).ReturnsAsync(recipe);
+      _repository.Setup(repository => repository.GetByIdUpdate(user, recipe.Id)).ReturnsAsync(recipe);
     }
 
     return this;

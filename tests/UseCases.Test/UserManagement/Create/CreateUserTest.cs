@@ -5,6 +5,7 @@ using CommonTestsUtilities.Requests;
 using CommonTestsUtilities.Token;
 using FluentAssertions;
 using MyRecipeBook.Application.UseCases.UserManagement.Create;
+using MyRecipeBook.Domain.Extensions;
 using MyRecipeBook.Exceptions;
 using MyRecipeBook.Exceptions.ExceptionBase;
 
@@ -43,15 +44,16 @@ public class CreateUserTest
   {
     var mapper = MapperBuilder.Build();
     var passwordEncrypt = PasswordEncryptBuilder.Build();
-    var repository = new UserRepositoryBuilder();
+    var userWriteOnlyRepository = UserWriteOnlyRepositoryBuilder.Build();
     var unitOfWork = UnityOfWorkBuilder.Build();
+    var userReadOnlyRepository = new UserReadOnlyRepositoryBuilder();
     var accessToken = JwtTokenGeneratorBuilder.Build();
 
-    if (string.IsNullOrEmpty(email) == false)
+    if (email.NotEmpty())
     {
-      repository.IsActiveUserWithEmail(email);
+      userReadOnlyRepository.IsActiveUserWithEmail(email);
     }
 
-    return new CreateUser(mapper, passwordEncrypt, repository.Build(), unitOfWork, accessToken);
+    return new CreateUser(userWriteOnlyRepository, userReadOnlyRepository.Build(), mapper, passwordEncrypt, unitOfWork, accessToken);
   }
 }

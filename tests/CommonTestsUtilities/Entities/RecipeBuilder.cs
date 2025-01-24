@@ -1,4 +1,5 @@
 ﻿using Bogus;
+using Bogus.Extensions;
 using MyRecipeBook.Domain.Entities;
 using MyRecipeBook.Domain.Enums;
 
@@ -46,7 +47,7 @@ public class RecipeBuilder
       {
         Id = 1,
         Step = 1,
-        Text = f.Lorem.Paragraph()
+        Text = f.Lorem.Text().ClampLength(0, 255)
       }))
       .RuleFor(r => r.DishTypes, f => f.Make(1, () => new MyRecipeBook.Domain.Entities.DishType
       {

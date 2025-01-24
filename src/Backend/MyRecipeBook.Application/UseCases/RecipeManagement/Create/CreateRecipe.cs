@@ -3,6 +3,7 @@ using MyRecipeBook.Application.Extensions;
 using MyRecipeBook.Communication.Requests;
 using MyRecipeBook.Communication.Responses;
 using MyRecipeBook.Domain.Entities;
+using MyRecipeBook.Domain.Extensions;
 using MyRecipeBook.Domain.Repositories;
 using MyRecipeBook.Domain.Repositories.RecipeRepository;
 using MyRecipeBook.Domain.Services.LoggedUser;
@@ -12,7 +13,7 @@ using MyRecipeBook.Exceptions.ExceptionBase;
 
 namespace MyRecipeBook.Application.UseCases.RecipeManagement.Create;
 
-public class CreateRecipe(IRecipeRepository repository, ILoggedUser _loggedUser, IUnitOfWork unitOfWork, IMapper mapper, IBlobStorageService blobStorageService) : ICreateRecipe
+public class CreateRecipe(IRecipeWriteOnlyRepository recipeWriteOnlyRepository, ILoggedUser _loggedUser, IUnitOfWork unitOfWork, IMapper mapper, IBlobStorageService blobStorageService) : ICreateRecipe
 {
   public async Task<CreatedRecipeResponse> Execute(CreateRecipeRequestFormData request)
   {
@@ -38,7 +39,7 @@ public class CreateRecipe(IRecipeRepository repository, ILoggedUser _loggedUser,
 
       (var isValidImage, var extension) = fileStream.ValidateAndGetImageExtension();
 
-      if (isValidImage == false)
+      if (isValidImage.IsFalse())
       {
         throw new RequestValidationException([ResourceMessagesException.ONLY_IMAGES_ACCEPTED]);
       }
@@ -48,7 +49,7 @@ public class CreateRecipe(IRecipeRepository repository, ILoggedUser _loggedUser,
       await blobStorageService.Upload(loggedUser, fileStream, recipe.ImageId);
     }
 
-    await repository.Add(recipe);
+    await recipeWriteOnlyRepository.Add(recipe);
     await unitOfWork.CommitAsync();
 
     return mapper.Map<CreatedRecipeResponse>(recipe);
@@ -58,7 +59,7 @@ public class CreateRecipe(IRecipeRepository repository, ILoggedUser _loggedUser,
   {
     var result = new RecipeValidator().Validate(request);
 
-    if (result.IsValid == false)
+    if (result.IsValid.IsFalse())
     {
       throw new RequestValidationException(result.Errors.Select(e => e.ErrorMessage).Distinct().ToList());
     }

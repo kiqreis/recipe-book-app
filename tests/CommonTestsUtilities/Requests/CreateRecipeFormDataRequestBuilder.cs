@@ -1,4 +1,5 @@
 ﻿using Bogus;
+using Bogus.Extensions;
 using Microsoft.AspNetCore.Http;
 using MyRecipeBook.Communication.Enums;
 using MyRecipeBook.Communication.Requests;
@@ -20,7 +21,7 @@ public class CreateRecipeFormDataRequestBuilder
       .RuleFor(r => r.DishTypes, f => f.Make(3, () => f.PickRandom<DishType>()))
       .RuleFor(r => r.Instructions, f => f.Make(3, () => new InstructionRequest
       {
-        Text = f.Lorem.Text(),
+        Text = f.Lorem.Text().ClampLength(0, 255),
         Step = step++
       }));
   }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using MyRecipeBook.Application.Extensions;
+using MyRecipeBook.Domain.Extensions;
 using MyRecipeBook.Domain.Repositories;
 using MyRecipeBook.Domain.Repositories.RecipeRepository;
 using MyRecipeBook.Domain.Services.LoggedUser;
@@ -9,12 +10,12 @@ using MyRecipeBook.Exceptions.ExceptionBase;
 
 namespace MyRecipeBook.Application.UseCases.RecipeManagement.Image;
 
-public class AddUpdateImage(ILoggedUser _loggedUser, IRecipeRepository repository, IUnitOfWork unitOfWork, IBlobStorageService blobStorageService) : IAddUpdateImage
+public class AddUpdateImage(ILoggedUser _loggedUser, IRecipeUpdateOnlyRepository recipeUpdateOnlyRepository, IUnitOfWork unitOfWork, IBlobStorageService blobStorageService) : IAddUpdateImage
 {
   public async Task Execute(long id, IFormFile file)
   {
     var loggedUser = await _loggedUser.User();
-    var recipe = await repository.GetById(loggedUser, id);
+    var recipe = await recipeUpdateOnlyRepository.GetById(loggedUser, id);
 
     if (recipe == null)
     {
@@ -25,7 +26,7 @@ public class AddUpdateImage(ILoggedUser _loggedUser, IRecipeRepository repositor
 
     (var isValidImage, var extension) = fileStream.ValidateAndGetImageExtension();
 
-    if (isValidImage == false)
+    if (isValidImage.IsFalse())
     {
       throw new RequestValidationException([ResourceMessagesException.ONLY_IMAGES_ACCEPTED]);
     }
@@ -34,7 +35,7 @@ public class AddUpdateImage(ILoggedUser _loggedUser, IRecipeRepository repositor
     {
       recipe.ImageId = $"{Guid.NewGuid()}{extension}";
 
-      repository.Update(recipe);
+      recipeUpdateOnlyRepository.Update(recipe);
 
       await unitOfWork.CommitAsync();
     }

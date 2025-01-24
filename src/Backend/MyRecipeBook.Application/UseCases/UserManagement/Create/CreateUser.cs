@@ -3,6 +3,7 @@ using FluentValidation.Results;
 using MyRecipeBook.Communication.Requests;
 using MyRecipeBook.Communication.Responses;
 using MyRecipeBook.Domain.Entities;
+using MyRecipeBook.Domain.Extensions;
 using MyRecipeBook.Domain.Repositories;
 using MyRecipeBook.Domain.Repositories.UserRepository;
 using MyRecipeBook.Domain.Security.Encryption;
@@ -12,7 +13,7 @@ using MyRecipeBook.Exceptions.ExceptionBase;
 
 namespace MyRecipeBook.Application.UseCases.UserManagement.Create;
 
-public class CreateUser(IMapper mapper, IPasswordEncrypt encrypt, IUserRepository repository, IUnitOfWork unitOfWork, IAccessTokenGenerator accessToken) : ICreateUser
+public class CreateUser(IUserWriteOnlyRepository writeOnlyRepository, IUserReadOnlyRepository readOnlyRepository, IMapper mapper, IPasswordEncrypt encrypt, IUnitOfWork unitOfWork, IAccessTokenGenerator accessToken) : ICreateUser
 {
   public async Task<CreateUserResponse> Execute(CreateUserRequest request)
   {
@@ -22,7 +23,7 @@ public class CreateUser(IMapper mapper, IPasswordEncrypt encrypt, IUserRepositor
     user.Password = encrypt.Encrypt(request.Password);
     user.UserId = Guid.NewGuid();
 
-    await repository.Add(user);
+    await writeOnlyRepository.Add(user);
     await unitOfWork.CommitAsync();
 
     return new CreateUserResponse
@@ -41,14 +42,14 @@ public class CreateUser(IMapper mapper, IPasswordEncrypt encrypt, IUserRepositor
     var validator = new CreateUserValidator();
     var result = await validator.ValidateAsync(request);
 
-    var emailExists = await repository.IsActiveUserWithEmail(request.Email);
+    var emailExists = await readOnlyRepository.IsActiveUserWithEmail(request.Email);
 
     if (emailExists)
     {
       result.Errors.Add(new ValidationFailure(string.Empty, ResourceMessagesException.EMAIL_ALREADY_EXISTS));
     }
 
-    if (result.IsValid == false)
+    if (result.IsValid.IsFalse())
     {
       var errorMessages = result.Errors.Select(e => e.ErrorMessage).ToList();
 

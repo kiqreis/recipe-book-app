@@ -5,6 +5,7 @@ using CommonTestsUtilities.Requests;
 using FluentAssertions;
 using MyRecipeBook.Application.UseCases.UserManagement.Update;
 using MyRecipeBook.Domain.Entities;
+using MyRecipeBook.Domain.Extensions;
 using MyRecipeBook.Exceptions;
 using MyRecipeBook.Exceptions.ExceptionBase;
 
@@ -65,15 +66,15 @@ public class UpdateUserTest
   private static UpdateUser UpdateUser(User user, string? email = null)
   {
     var unitOfWork = UnityOfWorkBuilder.Build();
-    var repository = new UserRepositoryBuilder().GetById(user).Build();
+    var userUpdateOnlyRepository = new UserUpdateOnlyRepositoryBuilder().GetById(user).Build();
     var loggedUser = LoggedUserBuilder.Build(user);
-    var userRepository = new UserRepositoryBuilder();
+    var userReadOnlyRepository = new UserReadOnlyRepositoryBuilder();
 
-    if (string.IsNullOrWhiteSpace(email))
+    if (email.NotEmpty())
     {
-      userRepository.IsActiveUserWithEmail(email!);
+      userReadOnlyRepository.IsActiveUserWithEmail(email!);
     }
 
-    return new UpdateUser(loggedUser, repository, unitOfWork);
+    return new UpdateUser(loggedUser, userUpdateOnlyRepository, userReadOnlyRepository.Build(), unitOfWork);
   }
 }

@@ -5,5 +5,5 @@ namespace MyRecipeBook.Application.UseCases.UserManagement.Create;
 
 public interface ICreateUser
 {
-  public Task<CreateUserResponse> Execute(CreateUserRequest request);
+  Task<CreateUserResponse> Execute(CreateUserRequest request);
 }

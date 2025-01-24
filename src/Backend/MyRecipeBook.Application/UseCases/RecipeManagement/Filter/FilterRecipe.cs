@@ -4,6 +4,7 @@ using MyRecipeBook.Communication.Requests;
 using MyRecipeBook.Communication.Responses;
 using MyRecipeBook.Domain.Dtos;
 using MyRecipeBook.Domain.Enums;
+using MyRecipeBook.Domain.Extensions;
 using MyRecipeBook.Domain.Repositories.RecipeRepository;
 using MyRecipeBook.Domain.Services.LoggedUser;
 using MyRecipeBook.Domain.Services.Storage;
@@ -11,7 +12,7 @@ using MyRecipeBook.Exceptions.ExceptionBase;
 
 namespace MyRecipeBook.Application.UseCases.RecipeManagement.Filter;
 
-public class FilterRecipe(IMapper mapper, ILoggedUser _loggedUser, IRecipeRepository repository, IBlobStorageService blobStorageService) : IFilterRecipe
+public class FilterRecipe(IMapper mapper, ILoggedUser _loggedUser, IRecipeReadOnlyRepository recipeReadOnlyRepository, IBlobStorageService blobStorageService) : IFilterRecipe
 {
   public async Task<RecipesResponse> Execute(RecipeFilterRequest request)
   {
@@ -27,7 +28,7 @@ public class FilterRecipe(IMapper mapper, ILoggedUser _loggedUser, IRecipeReposi
       DishTypes = request.DishTypes.Distinct().Select(d => (DishType)d).ToList()
     };
 
-    var recipes = await repository.Filter(loggedUser, filters);
+    var recipes = await recipeReadOnlyRepository.Filter(loggedUser, filters);
 
     return new RecipesResponse
     {
@@ -40,7 +41,7 @@ public class FilterRecipe(IMapper mapper, ILoggedUser _loggedUser, IRecipeReposi
     var validator = new FilterRecipeValidator();
     var result = validator.Validate(request);
 
-    if (result.IsValid == false)
+    if (result.IsValid.IsFalse())
     {
       var errorMessages = result.Errors.Select(e => e.ErrorMessage).Distinct().ToList();
 
