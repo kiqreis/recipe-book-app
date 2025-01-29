@@ -12,7 +12,7 @@ namespace WebApi.Test.RecipeManagement.Filter;
 
 public class FilterRecipeTest : MyRecipeBookClassFixture
 {
-  private readonly string method = "recipe/filter";
+  private readonly string _method = "recipe/filter";
 
   private readonly Guid _userId;
 
@@ -43,7 +43,7 @@ public class FilterRecipeTest : MyRecipeBookClassFixture
     };
 
     var token = JwtTokenGeneratorBuilder.Build().Generate(_userId);
-    var response = await Post(method: method, request: request, token: token);
+    var response = await Post(method: _method, request: request, token: token);
 
     response.StatusCode.Should().Be(HttpStatusCode.OK);
 
@@ -62,7 +62,7 @@ public class FilterRecipeTest : MyRecipeBookClassFixture
 
     var token = JwtTokenGeneratorBuilder.Build().Generate(_userId);
 
-    var response = await Post(method: method, request: request, token: token);
+    var response = await Post(method: _method, request: request, token: token);
 
     response.StatusCode.Should().Be(HttpStatusCode.NoContent);
   }
@@ -76,7 +76,7 @@ public class FilterRecipeTest : MyRecipeBookClassFixture
 
     var token = JwtTokenGeneratorBuilder.Build().Generate(_userId);
 
-    var response = await Post(method: method, request: request, token: token, culture: culture);
+    var response = await Post(method: _method, request: request, token: token, culture: culture);
 
     response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
 

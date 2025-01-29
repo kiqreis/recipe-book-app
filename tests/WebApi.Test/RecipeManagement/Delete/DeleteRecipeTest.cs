@@ -11,7 +11,7 @@ namespace WebApi.Test.RecipeManagement.Delete;
 
 public class DeleteRecipeTest : MyRecipeBookClassFixture
 {
-  private readonly string method = "recipe";
+  private readonly string _method = "recipe";
 
   private readonly Guid _userId;
   private readonly string _recipeId;
@@ -26,11 +26,11 @@ public class DeleteRecipeTest : MyRecipeBookClassFixture
   public async Task Success()
   {
     var token = JwtTokenGeneratorBuilder.Build().Generate(_userId);
-    var response = await Delete($"{method}/{_recipeId}", token);
+    var response = await Delete($"{_method}/{_recipeId}", token);
 
     response.StatusCode.Should().Be(HttpStatusCode.NoContent);
 
-    response = await Get($"{method}/{_recipeId}", token);
+    response = await Get($"{_method}/{_recipeId}", token);
 
     response.StatusCode.Should().Be(HttpStatusCode.NotFound);
   }
@@ -41,7 +41,7 @@ public class DeleteRecipeTest : MyRecipeBookClassFixture
   {
     var token = JwtTokenGeneratorBuilder.Build().Generate(_userId);
     var id = IdEncryptBuilder.Build().Encode(1000);
-    var response = await Delete($"{method}/{id}", token);
+    var response = await Delete($"{_method}/{id}", token);
 
     response.StatusCode.Should().Be(HttpStatusCode.NotFound);
 

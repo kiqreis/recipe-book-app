@@ -7,7 +7,7 @@ namespace WebApi.Test.RecipeManagement.Filter;
 
 public class FilterRecipeInvalidToken : MyRecipeBookClassFixture
 {
-  private readonly string method = "recipe/filter";
+  private readonly string _method = "recipe/filter";
 
   public FilterRecipeInvalidToken(CustomWebApplicationFactory factory) : base(factory)
   {
@@ -17,7 +17,7 @@ public class FilterRecipeInvalidToken : MyRecipeBookClassFixture
   public async Task Error_Token_Invalid()
   {
     var request = RecipeFilterRequestBuilder.Build();
-    var response = await Post(method: method, request: request, token: "invalidToken");
+    var response = await Post(method: _method, request: request, token: "invalidToken");
 
     response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
   }
@@ -26,7 +26,7 @@ public class FilterRecipeInvalidToken : MyRecipeBookClassFixture
   public async Task Error_Without_Token()
   {
     var request = RecipeFilterRequestBuilder.Build();
-    var response = await Post(method: method, request: request, token: string.Empty);
+    var response = await Post(method: _method, request: request, token: string.Empty);
 
     response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
   }
@@ -36,7 +36,7 @@ public class FilterRecipeInvalidToken : MyRecipeBookClassFixture
   {
     var request = RecipeFilterRequestBuilder.Build();
     var token = JwtTokenGeneratorBuilder.Build().Generate(Guid.NewGuid());
-    var response = await Post(method: method, request: request, token: token);
+    var response = await Post(method: _method, request: request, token: token);
 
     response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
   }

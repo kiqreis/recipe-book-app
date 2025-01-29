@@ -6,12 +6,12 @@ namespace WebApi.Test.RecipeManagement.Dashboard;
 
 public class GetDashboardInvalidTokenTest(CustomWebApplicationFactory factory) : MyRecipeBookClassFixture(factory)
 {
-  private readonly string method = "dashboard";
+  private readonly string _method = "dashboard";
 
   [Fact]
   public async Task Error_Invalid_Token()
   {
-    var response = await Get(method, token: "invalidToken");
+    var response = await Get(method: _method, token: "invalidToken");
 
     response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
   }
@@ -19,7 +19,7 @@ public class GetDashboardInvalidTokenTest(CustomWebApplicationFactory factory) :
   [Fact]
   public async Task Error_Without_Token()
   {
-    var response = await Get(method, token: string.Empty);
+    var response = await Get(method: _method, token: string.Empty);
 
     response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
   }
@@ -28,7 +28,7 @@ public class GetDashboardInvalidTokenTest(CustomWebApplicationFactory factory) :
   public async Task Error_Token_With_User_Not_Found()
   {
     var token = JwtTokenGeneratorBuilder.Build().Generate(Guid.NewGuid());
-    var response = await Get(method, token);
+    var response = await Get(method: _method, token: token);
 
     response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
   }

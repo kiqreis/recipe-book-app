@@ -7,7 +7,7 @@ namespace WebApi.Test.RecipeManagement.GetById;
 
 public class GetRecipeByIdInvalidToken : MyRecipeBookClassFixture
 {
-  private readonly string method = "recipe";
+  private readonly string _method = "recipe";
 
   public GetRecipeByIdInvalidToken(CustomWebApplicationFactory factory) : base(factory)
   {
@@ -17,7 +17,7 @@ public class GetRecipeByIdInvalidToken : MyRecipeBookClassFixture
   public async Task Error_Invalid_Token()
   {
     var id = IdEncryptBuilder.Build().Encode(1);
-    var response = await Get($"{method}/{id}", token: "invalidToken");
+    var response = await Get($"{_method}/{id}", token: "invalidToken");
 
     response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
   }
@@ -27,7 +27,7 @@ public class GetRecipeByIdInvalidToken : MyRecipeBookClassFixture
   {
     var id = IdEncryptBuilder.Build().Encode(1);
     var token = JwtTokenGeneratorBuilder.Build().Generate(Guid.NewGuid());
-    var response = await Get($"{method}/{id}", token);
+    var response = await Get($"{_method}/{id}", token);
 
     response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
   }

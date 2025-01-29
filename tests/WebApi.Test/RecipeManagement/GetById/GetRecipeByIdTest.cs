@@ -11,7 +11,7 @@ namespace WebApi.Test.RecipeManagement.GetById;
 
 public class GetRecipeByIdTest : MyRecipeBookClassFixture
 {
-  private readonly string method = "recipe";
+  private readonly string _method = "recipe";
 
   private readonly Guid _userId;
   private readonly string _recipeId;
@@ -28,7 +28,7 @@ public class GetRecipeByIdTest : MyRecipeBookClassFixture
   public async Task Success()
   {
     var token = JwtTokenGeneratorBuilder.Build().Generate(_userId);
-    var response = await Get($"{method}/{_recipeId}", token);
+    var response = await Get($"{_method}/{_recipeId}", token: token);
 
     response.StatusCode.Should().Be(HttpStatusCode.OK);
 
@@ -46,7 +46,7 @@ public class GetRecipeByIdTest : MyRecipeBookClassFixture
   {
     var token = JwtTokenGeneratorBuilder.Build().Generate(_userId);
     var id = IdEncryptBuilder.Build().Encode(1000);
-    var response = await Get($"{method}/{id}", token, culture);
+    var response = await Get($"{_method}/{id}", token, culture);
 
     response.StatusCode.Should().Be(HttpStatusCode.NotFound);
 

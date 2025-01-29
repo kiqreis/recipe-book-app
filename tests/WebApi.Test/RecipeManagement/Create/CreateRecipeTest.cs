@@ -11,7 +11,7 @@ namespace WebApi.Test.RecipeManagement.Create;
 
 public class CreateRecipeTest : MyRecipeBookClassFixture
 {
-  private readonly string method = "recipe";
+  private readonly string _method = "recipe";
   private readonly Guid _userId;
 
   public CreateRecipeTest(CustomWebApplicationFactory factory) : base(factory)
@@ -24,7 +24,7 @@ public class CreateRecipeTest : MyRecipeBookClassFixture
   {
     var request = CreateRecipeFormDataRequestBuilder.Build();
     var token = JwtTokenGeneratorBuilder.Build().Generate(_userId);
-    var response = await PostFormData(method: method, request: request, token: token);
+    var response = await PostFormData(method: _method, request: request, token: token);
 
     response.StatusCode.Should().Be(HttpStatusCode.Created);
 
@@ -45,7 +45,7 @@ public class CreateRecipeTest : MyRecipeBookClassFixture
     request.Title = string.Empty;
 
     var token = JwtTokenGeneratorBuilder.Build().Generate(_userId);
-    var response = await PostFormData(method: method, request: request, token: token);
+    var response = await PostFormData(method: _method, request: request, token: token);
 
     response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
 

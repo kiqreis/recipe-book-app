@@ -4,6 +4,7 @@ using FluentMigrator.Runner;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MyRecipeBook.Domain.Extensions;
 using MyRecipeBook.Domain.Repositories;
 using MyRecipeBook.Domain.Repositories.RecipeRepository;
 using MyRecipeBook.Domain.Repositories.UserRepository;
@@ -111,9 +112,9 @@ public static class DependencyInjectionExtension
 
   private static void AddAzureStorage(IServiceCollection services, IConfiguration configuration)
   {
-    var connectionString = configuration.GetValue<string>("Settings:BlobStorage:Azure")!;
+    var connectionString = configuration.GetValue<string>("Settings:BlobStorage:Azure");
 
-    if (string.IsNullOrWhiteSpace(connectionString))
+    if (connectionString.NotEmpty())
     {
       services.AddScoped<IBlobStorageService>(_ => new AzureStorageService(new BlobServiceClient(connectionString)));
     }

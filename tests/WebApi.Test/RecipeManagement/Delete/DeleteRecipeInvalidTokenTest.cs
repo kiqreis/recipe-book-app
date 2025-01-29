@@ -7,7 +7,7 @@ namespace WebApi.Test.RecipeManagement.Delete;
 
 public class DeleteRecipeInvalidTokenTest : MyRecipeBookClassFixture
 {
-  private readonly string method = "recipe";
+  private readonly string _method = "recipe";
 
   public DeleteRecipeInvalidTokenTest(CustomWebApplicationFactory factory) : base(factory)
   {
@@ -17,7 +17,7 @@ public class DeleteRecipeInvalidTokenTest : MyRecipeBookClassFixture
   public async Task Error_Invalid_Token()
   {
     var id = IdEncryptBuilder.Build().Encode(1);
-    var response = await Delete($"{method}/{id}", token: "invalidToken");
+    var response = await Delete($"{_method}/{id}", token: "invalidToken");
 
     response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
   }
@@ -27,7 +27,7 @@ public class DeleteRecipeInvalidTokenTest : MyRecipeBookClassFixture
   {
     var id = IdEncryptBuilder.Build().Encode(1);
     var token = JwtTokenGeneratorBuilder.Build().Generate(Guid.NewGuid());
-    var response = await Delete($"{method}/{id}", token: token);
+    var response = await Delete($"{_method}/{id}", token: token);
 
     response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
   }
@@ -36,7 +36,7 @@ public class DeleteRecipeInvalidTokenTest : MyRecipeBookClassFixture
   public async Task Error_Without_Token()
   {
     var id = IdEncryptBuilder.Build().Encode(1);
-    var response = await Delete($"{method}/{id}", token: string.Empty);
+    var response = await Delete($"{_method}/{id}", token: string.Empty);
 
     response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
   }

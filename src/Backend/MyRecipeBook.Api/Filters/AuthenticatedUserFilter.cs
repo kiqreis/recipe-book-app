@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.IdentityModel.Tokens;
 using MyRecipeBook.Communication.Responses;
+using MyRecipeBook.Domain.Extensions;
 using MyRecipeBook.Domain.Repositories.UserRepository;
 using MyRecipeBook.Domain.Security.Token;
 using MyRecipeBook.Exceptions;
@@ -10,7 +11,7 @@ using System.Net;
 
 namespace MyRecipeBook.Api.Filters;
 
-public class AuthenticatedUserFilter(IAccessTokenValidator accessToken, IUserRepository repository) : IAsyncAuthorizationFilter
+public class AuthenticatedUserFilter(IAccessTokenValidator accessToken, IUserReadOnlyRepository userReadOnlyRepository) : IAsyncAuthorizationFilter
 {
   public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
   {
@@ -20,9 +21,9 @@ public class AuthenticatedUserFilter(IAccessTokenValidator accessToken, IUserRep
 
       var userId = accessToken.ValidateAndGetUserIdentifier(token);
 
-      var exists = await repository.IsActiveUserWithIdentifier(userId);
+      var exists = await userReadOnlyRepository.IsActiveUserWithId(userId);
 
-      if (exists == false)
+      if (exists.IsFalse())
       {
         throw new UnauthorizedException(ResourceMessagesException.USER_WITHOUT_PERMISSION_ACCESS_RESOURCE);
       }

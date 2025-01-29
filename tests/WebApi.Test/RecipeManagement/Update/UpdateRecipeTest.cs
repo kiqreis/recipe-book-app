@@ -11,7 +11,7 @@ namespace WebApi.Test.RecipeManagement.Update;
 
 public class UpdateRecipeTest : MyRecipeBookClassFixture
 {
-  private readonly string method = "recipe";
+  private readonly string _method = "recipe";
 
   private readonly Guid _userId;
   private readonly string _recipeId;
@@ -27,7 +27,7 @@ public class UpdateRecipeTest : MyRecipeBookClassFixture
   {
     var request = RecipeRequestBuilder.Build();
     var token = JwtTokenGeneratorBuilder.Build().Generate(_userId);
-    var response = await Put($"{method}/{_recipeId}", request, token);
+    var response = await Put($"{_method}/{_recipeId}", request, token);
 
     response.StatusCode.Should().Be(HttpStatusCode.NoContent);
   }
@@ -41,7 +41,7 @@ public class UpdateRecipeTest : MyRecipeBookClassFixture
     request.Title = string.Empty;
 
     var token = JwtTokenGeneratorBuilder.Build().Generate(_userId);
-    var response = await Put($"{method}/{_recipeId}", request, token, culture);
+    var response = await Put($"{_method}/{_recipeId}", request, token, culture);
 
     response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
 

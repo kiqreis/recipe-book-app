@@ -1,4 +1,5 @@
 ﻿using Bogus;
+using Bogus.Extensions;
 using MyRecipeBook.Domain.Dtos;
 using MyRecipeBook.Domain.Enums;
 
@@ -15,7 +16,7 @@ public class RecipeGeneratedDtoBuilder
       .RuleFor(recipe => recipe.Instructions, f => f.Make(1, () => new InstructionGeneratedDto
       {
         Step = 1,
-        Text = f.Lorem.Text()
+        Text = f.Lorem.Text().ClampLength(0, 255)
       }));
   }
 }

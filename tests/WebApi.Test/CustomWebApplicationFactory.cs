@@ -21,6 +21,10 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
   protected override void ConfigureWebHost(IWebHostBuilder builder)
   {
     builder.UseEnvironment("Test")
+      .ConfigureAppConfiguration((context, config) =>
+      {
+        config.AddUserSecrets<Program>();
+      })
       .ConfigureServices(service =>
       {
         var descriptor = service.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<AppDbContext>));

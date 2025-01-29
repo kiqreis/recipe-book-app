@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MyRecipeBook.Communication.Responses;
+using MyRecipeBook.Domain.Extensions;
 using MyRecipeBook.Domain.Repositories.RecipeRepository;
 using MyRecipeBook.Domain.Services.LoggedUser;
 using MyRecipeBook.Domain.Services.Storage;
@@ -22,7 +23,7 @@ public class GetRecipeById(IMapper mapper, ILoggedUser _loggedUser, IRecipeReadO
 
     var response = mapper.Map<RecipeResponse>(recipe);
 
-    if (!string.IsNullOrWhiteSpace(recipe.ImageId))
+    if (recipe.ImageId.NotEmpty())
     {
       var url = await blobStorageService.GetImageUrl(loggedUser, recipe.ImageId);
 

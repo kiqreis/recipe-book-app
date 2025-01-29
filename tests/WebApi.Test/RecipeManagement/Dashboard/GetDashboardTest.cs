@@ -7,7 +7,7 @@ namespace WebApi.Test.RecipeManagement.Dashboard;
 
 public class GetDashboardTest : MyRecipeBookClassFixture
 {
-  private readonly string method = "dashboard";
+  private readonly string _method = "dashboard";
 
   private readonly Guid _userId;
 
@@ -20,7 +20,7 @@ public class GetDashboardTest : MyRecipeBookClassFixture
   public async Task Success()
   {
     var token = JwtTokenGeneratorBuilder.Build().Generate(_userId);
-    var response = await Get(method, token);
+    var response = await Get(method: _method, token: token);
 
     response.StatusCode.Should().Be(HttpStatusCode.OK);
 

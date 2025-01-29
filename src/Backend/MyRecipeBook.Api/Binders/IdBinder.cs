@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using MyRecipeBook.Domain.Extensions;
 using Sqids;
 
 namespace MyRecipeBook.Api.Binders;
@@ -17,7 +18,7 @@ public class IdBinder(SqidsEncoder<long> encoder) : IModelBinder
 
     var value = valueProviderResult.FirstValue;
 
-    if (string.IsNullOrWhiteSpace(value))
+    if (value.NotEmpty())
       return Task.CompletedTask;
 
     var id = encoder.Decode(value).Single();

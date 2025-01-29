@@ -1,6 +1,7 @@
 ﻿using Azure.Storage.Blobs;
 using Azure.Storage.Sas;
 using MyRecipeBook.Domain.Entities;
+using MyRecipeBook.Domain.Extensions;
 using MyRecipeBook.Domain.Services.Storage;
 using MyRecipeBook.Domain.ValueObjects;
 
@@ -25,7 +26,7 @@ public class AzureStorageService(BlobServiceClient blobServiceClient) : IBlobSto
     var containerClient = blobServiceClient.GetBlobContainerClient(containerName);
     var exist = await containerClient.ExistsAsync();
 
-    if (exist.Value == false)
+    if (exist.Value.IsFalse())
     {
       return string.Empty;
     }

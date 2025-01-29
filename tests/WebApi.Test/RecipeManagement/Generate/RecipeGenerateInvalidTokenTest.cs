@@ -7,13 +7,13 @@ namespace WebApi.Test.RecipeManagement.Generate;
 
 public class RecipeGenerateInvalidTokenTest(CustomWebApplicationFactory factory) : MyRecipeBookClassFixture(factory)
 {
-  private readonly string method = "recipe/generate";
+  private readonly string _method = "recipe/generate";
 
   [Fact]
   public async Task Error_Invalid_Tokne()
   {
     var request = RecipeGenerateRequestBuilder.Build();
-    var response = await Post(method: method, request: request, token: "invalidToken");
+    var response = await Post(method: _method, request: request, token: "invalidToken");
 
     response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
   }
@@ -22,7 +22,7 @@ public class RecipeGenerateInvalidTokenTest(CustomWebApplicationFactory factory)
   public async Task Error_Without_Token()
   {
     var request = RecipeGenerateRequestBuilder.Build();
-    var response = await Post(method: method, request: request, token: string.Empty);
+    var response = await Post(method: _method, request: request, token: string.Empty);
 
     response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
   }
@@ -32,7 +32,7 @@ public class RecipeGenerateInvalidTokenTest(CustomWebApplicationFactory factory)
   {
     var request = RecipeGenerateRequestBuilder.Build();
     var token = JwtTokenGeneratorBuilder.Build().Generate(Guid.NewGuid());
-    var response = await Post(method: method, request: request, token: token);
+    var response = await Post(method: _method, request: request, token: token);
 
     response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
   }

@@ -13,13 +13,13 @@ public class CreateRecipeFormDataRequestBuilder
     var step = 1;
 
     return new Faker<CreateRecipeRequestFormData>()
-      .RuleFor(r => r.Image, _ => formFile)
-      .RuleFor(r => r.Title, f => f.Lorem.Word())
-      .RuleFor(r => r.CookingTime, f => f.PickRandom<CookingTime>())
-      .RuleFor(r => r.Difficulty, f => f.PickRandom<Difficulty>())
-      .RuleFor(r => r.Ingredients, f => f.Make(3, () => f.Commerce.ProductName()))
-      .RuleFor(r => r.DishTypes, f => f.Make(3, () => f.PickRandom<DishType>()))
-      .RuleFor(r => r.Instructions, f => f.Make(3, () => new InstructionRequest
+      .RuleFor(recipe => recipe.Image, _ => formFile)
+      .RuleFor(recipe => recipe.Title, f => f.Lorem.Word())
+      .RuleFor(recipe => recipe.CookingTime, f => f.PickRandom<CookingTime>())
+      .RuleFor(recipe => recipe.Difficulty, f => f.PickRandom<Difficulty>())
+      .RuleFor(recipe => recipe.Ingredients, f => f.Make(3, () => f.Commerce.ProductName()))
+      .RuleFor(recipe => recipe.DishTypes, f => f.Make(3, () => f.PickRandom<DishType>()))
+      .RuleFor(recipe => recipe.Instructions, f => f.Make(3, () => new InstructionRequest
       {
         Text = f.Lorem.Text().ClampLength(0, 255),
         Step = step++

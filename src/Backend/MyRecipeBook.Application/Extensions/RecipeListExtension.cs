@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MyRecipeBook.Communication.Responses;
 using MyRecipeBook.Domain.Entities;
+using MyRecipeBook.Domain.Extensions;
 using MyRecipeBook.Domain.Services.Storage;
 
 namespace MyRecipeBook.Application.Extensions;
@@ -13,7 +14,7 @@ public static class RecipeListExtension
     {
       var response = mapper.Map<RecipeResponseShort>(recipe);
 
-      if (!string.IsNullOrWhiteSpace(recipe.ImageId))
+      if (recipe.ImageId.NotEmpty())
       {
         response.ImageUrl = await blobStorageService.GetImageUrl(user, recipe.ImageId);
       }

@@ -1,5 +1,4 @@
 using Microsoft.OpenApi.Models;
-using MyRecipeBook.Api.BackgroundServices;
 using MyRecipeBook.Api.Converters;
 using MyRecipeBook.Api.Filters;
 using MyRecipeBook.Api.Middleware;
@@ -64,7 +63,6 @@ builder.Services.AddScoped<ITokenProvider, HttpContextTokenProvider>();
 
 builder.Services.AddRouting(opt => opt.LowercaseUrls = true);
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddHostedService<DeleteUserService>();
 
 var app = builder.Build();
 

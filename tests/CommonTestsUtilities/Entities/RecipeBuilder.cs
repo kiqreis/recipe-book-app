@@ -7,7 +7,7 @@ namespace CommonTestsUtilities.Entities;
 
 public class RecipeBuilder
 {
-  public static IList<Recipe> Collection(User user, int count = 2)
+  public static IList<Recipe> Collection(User user, uint count = 2)
   {
     List<Recipe> list = [];
 
