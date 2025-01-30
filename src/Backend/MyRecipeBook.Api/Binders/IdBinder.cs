@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using MyRecipeBook.Domain.Extensions;
 using Sqids;
 
 namespace MyRecipeBook.Api.Binders;

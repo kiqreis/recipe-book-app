@@ -28,7 +28,7 @@ public class DeleteUserService : BackgroundService
     var message = args.Message.Body.ToString();
     var userId = Guid.Parse(message);
     var scope = _services.CreateScope();
-    var deleteUser = scope.ServiceProvider.GetRequiredService<IDeleteAccountUser>();
+    var deleteUser = scope.ServiceProvider.GetRequiredService<IDeleteUserAccount>();
 
     await deleteUser.Execute(userId);
   }

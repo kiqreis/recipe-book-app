@@ -1,9 +1,17 @@
-﻿namespace MyRecipeBook.Application.UseCases.UserManagement.Delete.DeleteAccount;
+﻿using MyRecipeBook.Domain.Repositories;
+using MyRecipeBook.Domain.Repositories.UserRepository;
+using MyRecipeBook.Domain.Services.Storage;
 
-public class DeleteUserAccount 
+namespace MyRecipeBook.Application.UseCases.UserManagement.Delete.DeleteAccount;
+
+public class DeleteUserAccount(IUserDeleteOnlyRepository userDeleteOnlyRepository, IUnitOfWork unitOfWork, IBlobStorageService blobStorageService) : IDeleteUserAccount
 {
-  public Task Execute(Guid userId)
+  public async Task Execute(Guid userId)
   {
-    throw new NotImplementedException();
+    await blobStorageService.DeleteContainer(userId);
+
+    await userDeleteOnlyRepository.DeleteAccount(userId);
+
+    await unitOfWork.CommitAsync();
   }
 }
