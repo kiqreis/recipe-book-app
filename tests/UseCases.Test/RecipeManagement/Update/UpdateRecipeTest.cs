@@ -60,7 +60,7 @@ public class UpdateRecipeTest
   {
     var mapper = MapperBuilder.Build();
     var loggedUser = LoggedUserBuilder.Build(user);
-    var unitOfWork = UnityOfWorkBuilder.Build();
+    var unitOfWork = UnitOfWorkBuilder.Build();
     var recipeUpsateOnlyRepository = new RecipeUpdateOnlyRepositoryBuilder().GetById(user, recipe).Build();
 
     return new UpdateRecipe(loggedUser, unitOfWork, mapper, recipeUpsateOnlyRepository);

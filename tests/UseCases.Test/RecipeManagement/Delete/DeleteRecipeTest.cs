@@ -41,7 +41,7 @@ public class DeleteRecipeTest
     var loggedUser = LoggedUserBuilder.Build(user);
     var recipeReadOnlyRepository = new RecipeReadOnlyRepositoryBuilder().GetById(user, recipe).Build();
     var recipeWriteOnlyRepository = RecipeWriteOnlyRepositoryBuilder.Build();
-    var unitOfWork = UnityOfWorkBuilder.Build();
+    var unitOfWork = UnitOfWorkBuilder.Build();
     var blobStorage = new BlobStorageServiceBuilder().GetImageUrl(user, recipe?.ImageId).Build();
 
     return new DeleteRecipe(loggedUser, recipeReadOnlyRepository, recipeWriteOnlyRepository, unitOfWork, blobStorage);

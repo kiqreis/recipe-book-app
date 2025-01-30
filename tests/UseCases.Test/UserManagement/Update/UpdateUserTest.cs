@@ -65,7 +65,7 @@ public class UpdateUserTest
 
   private static UpdateUser UpdateUser(User user, string? email = null)
   {
-    var unitOfWork = UnityOfWorkBuilder.Build();
+    var unitOfWork = UnitOfWorkBuilder.Build();
     var userUpdateOnlyRepository = new UserUpdateOnlyRepositoryBuilder().GetById(user).Build();
     var loggedUser = LoggedUserBuilder.Build(user);
     var userReadOnlyRepository = new UserReadOnlyRepositoryBuilder();

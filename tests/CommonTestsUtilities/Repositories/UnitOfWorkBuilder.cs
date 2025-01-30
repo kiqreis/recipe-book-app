@@ -3,7 +3,7 @@ using MyRecipeBook.Domain.Repositories;
 
 namespace CommonTestsUtilities.Repositories;
 
-public class UnityOfWorkBuilder
+public class UnitOfWorkBuilder
 {
   public static IUnitOfWork Build()
   {

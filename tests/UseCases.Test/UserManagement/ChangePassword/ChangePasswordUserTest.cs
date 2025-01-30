@@ -74,7 +74,7 @@ public class ChangePasswordUserTest
 
   private static ChangePassword ChangePassword(User user)
   {
-    var unitOfWork = UnityOfWorkBuilder.Build();
+    var unitOfWork = UnitOfWorkBuilder.Build();
     var userUpdateOnlyRepository = new UserUpdateOnlyRepositoryBuilder().GetById(user).Build();
     var loggedUser = LoggedUserBuilder.Build(user);
     var passwordEncrypt = PasswordEncryptBuilder.Build();

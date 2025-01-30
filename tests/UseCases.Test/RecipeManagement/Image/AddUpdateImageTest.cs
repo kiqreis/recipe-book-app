@@ -73,7 +73,7 @@ public class AddUpdateImageTest
   {
     var loggedUser = LoggedUserBuilder.Build(user);
     var recipeUpdateOnlyRepository = new RecipeUpdateOnlyRepositoryBuilder().GetById(user, recipe).Build();
-    var unitOfWork = UnityOfWorkBuilder.Build();
+    var unitOfWork = UnitOfWorkBuilder.Build();
     var blobStorage = new BlobStorageServiceBuilder().Build();
 
     return new AddUpdateImage(loggedUser, recipeUpdateOnlyRepository, unitOfWork, blobStorage);

@@ -87,7 +87,7 @@ public class CreateRecipeTest
   private static CreateRecipe CreateRecipe(User user)
   {
     var mapper = MapperBuilder.Build();
-    var unitOfWork = UnityOfWorkBuilder.Build();
+    var unitOfWork = UnitOfWorkBuilder.Build();
     var loggedUser = LoggedUserBuilder.Build(user);
     var recipeWriteOnlyRepository = RecipeWriteOnlyRepositoryBuilder.Build();
     var blobStorage = new BlobStorageServiceBuilder().Build();

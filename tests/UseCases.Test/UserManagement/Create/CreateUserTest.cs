@@ -45,7 +45,7 @@ public class CreateUserTest
     var mapper = MapperBuilder.Build();
     var passwordEncrypt = PasswordEncryptBuilder.Build();
     var userWriteOnlyRepository = UserWriteOnlyRepositoryBuilder.Build();
-    var unitOfWork = UnityOfWorkBuilder.Build();
+    var unitOfWork = UnitOfWorkBuilder.Build();
     var userReadOnlyRepository = new UserReadOnlyRepositoryBuilder();
     var accessToken = JwtTokenGeneratorBuilder.Build();
 
