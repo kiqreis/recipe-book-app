@@ -18,7 +18,7 @@ public class IdBinder(SqidsEncoder<long> encoder) : IModelBinder
 
     var value = valueProviderResult.FirstValue;
 
-    if (value.NotEmpty())
+    if (string.IsNullOrWhiteSpace(value))
       return Task.CompletedTask;
 
     var id = encoder.Decode(value).Single();
