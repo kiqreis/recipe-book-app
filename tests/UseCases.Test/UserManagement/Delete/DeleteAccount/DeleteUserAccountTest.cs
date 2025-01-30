@@ -3,7 +3,6 @@ using CommonTestsUtilities.Entities;
 using CommonTestsUtilities.Repositories;
 using FluentAssertions;
 using MyRecipeBook.Application.UseCases.UserManagement.Delete.DeleteAccount;
-using System.Runtime.CompilerServices;
 
 namespace UseCases.Test.UserManagement.Delete.DeleteAccount;
 
