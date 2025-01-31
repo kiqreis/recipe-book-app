@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Mvc;
+using MyRecipeBook.Application.UseCases.UserManagement.ExternalLogin;
 using MyRecipeBook.Application.UseCases.UserManagement.Login;
 using MyRecipeBook.Communication.Requests;
 using MyRecipeBook.Communication.Responses;
@@ -22,7 +23,7 @@ public class LoginController : MyRecipeBookControllerBase
 
   [HttpGet]
   [Route("google")]
-  public async Task<IActionResult> LoginGoogle(string url)
+  public async Task<IActionResult> LoginGoogle(string url, [FromServices] IExternalLogin externalLogin)
   {
     var authenticate = await Request.HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
 
@@ -37,7 +38,9 @@ public class LoginController : MyRecipeBookControllerBase
       var name = claims.First(claim => claim.Type == ClaimTypes.Name).Value;
       var email = claims.First(claim => claim.Type == ClaimTypes.Email).Value;
 
-      return Redirect(url);
+      var token = await externalLogin.Execute(name, email);
+
+      return Redirect($"{url}/{token}");
     }
   }
 }
