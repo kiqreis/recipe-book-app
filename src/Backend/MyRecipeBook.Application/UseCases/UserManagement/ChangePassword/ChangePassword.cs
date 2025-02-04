@@ -31,9 +31,8 @@ public class ChangePassword(ILoggedUser _loggedUser, IPasswordEncrypt passwordEn
   public void Validate(ChangePasswordRequest request, User user)
   {
     var result = new ChangePasswordValidator().Validate(request);
-    var currentPasswod = passwordEncrypt.Encrypt(request.Password);
 
-    if (currentPasswod.Equals(user.Password).IsFalse())
+    if (passwordEncrypt.IsValid(request.Password, user.Password).IsFalse())
     {
       result.Errors.Add(new ValidationFailure(string.Empty, ResourceMessagesException.DIFFERENT_PASSWORD_FROM_THE_CURRENT));
     }

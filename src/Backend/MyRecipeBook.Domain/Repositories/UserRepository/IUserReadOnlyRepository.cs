@@ -7,5 +7,4 @@ public interface IUserReadOnlyRepository
   Task<bool> IsActiveUserWithEmail(string email);
   Task<bool> IsActiveUserWithId(Guid userId);
   Task<User?> GetByEmail(string email);
-  Task<User?> GetByEmailAndPassword(string email, string password);
 }

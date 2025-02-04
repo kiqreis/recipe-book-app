@@ -1,5 +1,6 @@
 ﻿using MyRecipeBook.Communication.Requests;
 using MyRecipeBook.Communication.Responses;
+using MyRecipeBook.Domain.Extensions;
 using MyRecipeBook.Domain.Repositories.UserRepository;
 using MyRecipeBook.Domain.Security.Encryption;
 using MyRecipeBook.Domain.Security.Token;
@@ -11,8 +12,12 @@ public class Login(IUserReadOnlyRepository userReadOnlyRepository, IPasswordEncr
 {
   public async Task<CreateUserResponse> Execute(RequestLogin request)
   {
-    var passwordEncrypt = encrypt.Encrypt(request.Password);
-    var user = await userReadOnlyRepository.GetByEmailAndPassword(request.Email, passwordEncrypt) ?? throw new InvalidLoginException();
+    var user = await userReadOnlyRepository.GetByEmail(request.Email);
+
+    if (user == null || encrypt.IsValid(request.Password, user.Password).IsFalse())
+    {
+      throw new InvalidLoginException();
+    }
 
     return new CreateUserResponse
     {

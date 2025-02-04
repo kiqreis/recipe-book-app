@@ -98,7 +98,7 @@ public static class DependencyInjectionExtension
 
   private static void AddPasswordEncrypt(IServiceCollection services)
   {
-    services.AddScoped<IPasswordEncrypt, Sha512PasswordEncrypt>();
+    services.AddScoped<IPasswordEncrypt, BCryptNet>();
   }
 
   private static void AddOpenAI(IServiceCollection services, IConfiguration configuration)
