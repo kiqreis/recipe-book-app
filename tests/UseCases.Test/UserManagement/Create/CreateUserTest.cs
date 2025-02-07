@@ -22,10 +22,10 @@ public class CreateUserTest
     var response = await useCase.Execute(request);
 
     response.Should().NotBeNull();
-    response.Token.Should().NotBeNull();
+    response.Tokens.Should().NotBeNull();
     response.Name.Should().Be(request.Name);
     response.Email.Should().Be(request.Email);
-    response.Token.AccessToken.Should().NotBeNullOrEmpty();
+    response.Tokens.AccessToken.Should().NotBeNullOrEmpty();
   }
 
   [Fact]
@@ -48,12 +48,14 @@ public class CreateUserTest
     var unitOfWork = UnitOfWorkBuilder.Build();
     var userReadOnlyRepository = new UserReadOnlyRepositoryBuilder();
     var accessToken = JwtTokenGeneratorBuilder.Build();
+    var tokenRepository = TokenRepositoryBuilder.Build();
+    var refreshToken = new RefreshTokenGeneratorBuilder();
 
     if (email.NotEmpty())
     {
       userReadOnlyRepository.IsActiveUserWithEmail(email);
     }
 
-    return new CreateUser(userWriteOnlyRepository, userReadOnlyRepository.Build(), mapper, passwordEncrypt, unitOfWork, accessToken);
+    return new CreateUser(userWriteOnlyRepository, userReadOnlyRepository.Build(), mapper, passwordEncrypt, unitOfWork, accessToken, tokenRepository, refreshToken.Build());
   }
 }

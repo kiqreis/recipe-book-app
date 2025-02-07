@@ -25,9 +25,9 @@ public class LoginUserTest
     });
 
     result.Should().NotBeNull();
-    result.Token.Should().NotBeNull();
+    result.Tokens.Should().NotBeNull();
     result.Name.Should().NotBeNullOrWhiteSpace().And.Be(user.Name);
-    result.Token.AccessToken.Should().NotBeNullOrEmpty();
+    result.Tokens.AccessToken.Should().NotBeNullOrEmpty();
   }
 
   [Fact]
@@ -47,12 +47,15 @@ public class LoginUserTest
     var passwordEncrypt = PasswordEncryptBuilder.Build();
     var userReadOnlyRepository = new UserReadOnlyRepositoryBuilder();
     var accessToken = JwtTokenGeneratorBuilder.Build();
+    var tokenRepository = TokenRepositoryBuilder.Build();
+    var refreshToken = new RefreshTokenGeneratorBuilder();
+    var unitOfWork = UnitOfWorkBuilder.Build();
 
     if (user != null)
     {
       userReadOnlyRepository.GetByEmailAndPassword(user);
     }
 
-    return new Login(userReadOnlyRepository.Build(), passwordEncrypt, accessToken);
+    return new Login(userReadOnlyRepository.Build(), passwordEncrypt, accessToken, refreshToken.Build(), tokenRepository, unitOfWork);
   }
 }
