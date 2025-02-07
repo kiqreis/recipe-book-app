@@ -5,6 +5,7 @@ using MyRecipeBook.Communication.Responses;
 using MyRecipeBook.Domain.Entities;
 using MyRecipeBook.Domain.Extensions;
 using MyRecipeBook.Domain.Repositories;
+using MyRecipeBook.Domain.Repositories.TokenRepository;
 using MyRecipeBook.Domain.Repositories.UserRepository;
 using MyRecipeBook.Domain.Security.Encryption;
 using MyRecipeBook.Domain.Security.Token;
@@ -13,7 +14,7 @@ using MyRecipeBook.Exceptions.ExceptionBase;
 
 namespace MyRecipeBook.Application.UseCases.UserManagement.Create;
 
-public class CreateUser(IUserWriteOnlyRepository writeOnlyRepository, IUserReadOnlyRepository readOnlyRepository, IMapper mapper, IPasswordEncrypt encrypt, IUnitOfWork unitOfWork, IAccessTokenGenerator accessToken) : ICreateUser
+public class CreateUser(IUserWriteOnlyRepository writeOnlyRepository, IUserReadOnlyRepository readOnlyRepository, IMapper mapper, IPasswordEncrypt encrypt, IUnitOfWork unitOfWork, IAccessTokenGenerator accessToken, ITokenRepository tokenRepository, IRefreshTokenGenerator refreshTokenGenerator) : ICreateUser
 {
   public async Task<CreateUserResponse> Execute(CreateUserRequest request)
   {
@@ -26,15 +27,32 @@ public class CreateUser(IUserWriteOnlyRepository writeOnlyRepository, IUserReadO
     await writeOnlyRepository.Add(user);
     await unitOfWork.CommitAsync();
 
+    var refreshToken = await CreateAndSaveRefreshToken(user);
+
     return new CreateUserResponse
     {
       Name = user.Name,
       Email = user.Email,
-      Token = new TokenResponse
+      Tokens = new TokensResponse
       {
-        AccessToken = accessToken.Generate(user.UserId)
+        AccessToken = accessToken.Generate(user.UserId),
+        RefreshToken = refreshToken
       }
     };
+  }
+
+  private async Task<string> CreateAndSaveRefreshToken(User user)
+  {
+    var refreshToken = new RefreshToken
+    {
+      Value = refreshTokenGenerator.Generate(),
+      UserId = user.Id
+    };
+
+    await tokenRepository.SaveNewRefreshToken(refreshToken);
+    await unitOfWork.CommitAsync();
+
+    return refreshToken.Value;
   }
 
   private async Task Validate(CreateUserRequest request)

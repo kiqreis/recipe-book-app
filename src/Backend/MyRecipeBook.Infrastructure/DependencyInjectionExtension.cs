@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MyRecipeBook.Domain.Extensions;
 using MyRecipeBook.Domain.Repositories;
 using MyRecipeBook.Domain.Repositories.RecipeRepository;
+using MyRecipeBook.Domain.Repositories.TokenRepository;
 using MyRecipeBook.Domain.Repositories.UserRepository;
 using MyRecipeBook.Domain.Security.Encryption;
 using MyRecipeBook.Domain.Security.Token;
@@ -21,6 +22,7 @@ using MyRecipeBook.Infrastructure.Extensions;
 using MyRecipeBook.Infrastructure.Security.Encrypt;
 using MyRecipeBook.Infrastructure.Security.Token.Access.Generator;
 using MyRecipeBook.Infrastructure.Security.Token.Access.Validator;
+using MyRecipeBook.Infrastructure.Security.Token.Refresh;
 using MyRecipeBook.Infrastructure.Services.LoggedUser;
 using MyRecipeBook.Infrastructure.Services.OpenAI;
 using MyRecipeBook.Infrastructure.Services.ServiceBus;
@@ -71,6 +73,7 @@ public static class DependencyInjectionExtension
     services.AddScoped<IRecipeWriteOnlyRepository, RecipeRepository>();
     services.AddScoped<IRecipeReadOnlyRepository, RecipeRepository>();
     services.AddScoped<IRecipeUpdateOnlyRepository, RecipeRepository>();
+    services.AddScoped<ITokenRepository, TokenRepository>();
   }
 
   private static void AddFluentMigrator(IServiceCollection services, IConfiguration configuration)
@@ -92,6 +95,7 @@ public static class DependencyInjectionExtension
 
     services.AddScoped<IAccessTokenGenerator>(opt => new JwtTokenGenerator(expirationTimeMinutes, signingKey!));
     services.AddScoped<IAccessTokenValidator>(opt => new JwtTokenValidator(signingKey!));
+    services.AddScoped<IRefreshTokenGenerator, RefreshTokenGenerator>();
   }
 
   private static void AddLoggedUser(IServiceCollection services) => services.AddScoped<ILoggedUser, LoggedUser>();

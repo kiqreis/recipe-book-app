@@ -10,6 +10,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> context) : DbContext(co
 
   public DbSet<Recipe> Recipes { get; set; }
 
+  public DbSet<RefreshToken> RefreshTokens { get; set; }
+
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
     modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
