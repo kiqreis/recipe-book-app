@@ -42,7 +42,8 @@ public class LoginTest : MyRecipeBookClassFixture
 
     responseData.RootElement.GetProperty("name").GetString().Should().NotBeNullOrWhiteSpace()
       .And.Be(_name);
-    responseData.RootElement.GetProperty("token").GetProperty("accessToken").GetString().Should().NotBeNullOrEmpty();
+    responseData.RootElement.GetProperty("tokens").GetProperty("accessToken").GetString().Should().NotBeNullOrEmpty();
+    responseData.RootElement.GetProperty("tokens").GetProperty("refreshToken").GetString().Should().NotBeNullOrEmpty();
   }
 
   [Theory]

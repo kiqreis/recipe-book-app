@@ -29,7 +29,8 @@ public class CreateUserTest(CustomWebApplicationFactory factory) : MyRecipeBookC
 
     responseData.RootElement.GetProperty("email").GetString().Should().NotBeNullOrWhiteSpace()
       .And.Be(request.Email);
-    responseData.RootElement.GetProperty("token").GetProperty("accessToken").GetString().Should().NotBeNullOrEmpty();
+    responseData.RootElement.GetProperty("tokens").GetProperty("accessToken").GetString().Should().NotBeNullOrEmpty();
+    responseData.RootElement.GetProperty("tokens").GetProperty("refreshToken").GetString().Should().NotBeNullOrEmpty();
   }
 
   [Theory]
