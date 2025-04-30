@@ -40,14 +40,19 @@ Sistema moderno de gerenciamento de receitas culinárias, desenvolvido com .NET 
 
 ```
 src/
+backend/
 ├── MyRecipeBook.Api              # API RESTful com autenticação e middlewares
 ├── MyRecipeBook.Application     # Casos de uso e validações com FluentValidation
 ├── MyRecipeBook.Domain          # Entidades e interfaces
 ├── MyRecipeBook.Infrastructure  # Dapper, EF Core, ServiceBus, Blob Storage
-├── MyRecipeBook.Communication   # Contratos de requisição/resposta
+shared/
+├── MyRecipeBook.Communication   # Dtos para contratos de requisição/resposta
 ├── MyRecipeBook.Exceptions      # Tratamento centralizado de exceções
-test/
-├── MyRecipeBook.UnitTests       # Testes com FluentAssertions e Bogus
+tests/
+├── CommonTestUtilities      # Testes para utilitários comuns na aplicação
+├── UseCases.Test            # Testes para os casos de uso
+├── Validators.Test          # Testes para os validadores usados
+├── WebApi.Test              # Testes de integração para a api
 ```
 
 ---
